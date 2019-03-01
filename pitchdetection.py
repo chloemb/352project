@@ -32,4 +32,4 @@ while True:
     volume = "{:.6f}".format(volume)
 
     print(pitch)
-    print(volume)
+    # print(volume)
