@@ -21,12 +21,22 @@ screen = pygame.display.set_mode(size)
 #helper functions and other definitions
 buttons = pygame.sprite.RenderUpdates()
 
-class button(pygame.sprite.DirtySprite):
+players = pygame.sprite.GroupSingle()
+
+class player(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self, players)
+        self.image = pygame.surface(walkrect)
+        self.image.blit(walk[0],walkrect)
+        self.rect = walkrect
+        self.rect.x = 10
+
+class button(pygame.sprite.Sprite):
     def __init__(self, text="", location, shape):
         pygame.sprite.Sprite.__init__(self,buttons)
         self.text = text
         self.image = pygame.Surface(shape)
-        self.image.fill((1,1,1))
+        self.image.fill((240,240,240))
         self.rect = pygame.Surface.get_rect(self.image)
         self.rect.topleft = location
         self.state = 0 # 0 normal, 1 hover, 2 clicked
@@ -36,22 +46,40 @@ class button(pygame.sprite.DirtySprite):
             self.state == state
         if not text == None:
             self.text = text
-        self.dirty = 1
-    
+        rgb = 240 - (state * 40)
+        self.image.fill((rgb,rgb,rgb))
+        
+
+    def collidepoint(self,pos):
+        '''
+        mouseover detection
+        '''
+        return self.rect.collidepoint(pos)
+
+
+def maininit():
+    '''
+    Initialize the main menu
+    '''
+           
+    #Set button locations
+
+    newrect = button("New Game",(220, 150), (200, 50))
+    quitrect = button("Quit", (220, 280), (200, 50))
+
 
 def mainmenu(click = False):
     ''' 
     looping mainmenu routine
     '''
-       
-    #Set button locations
-
-    newrect = pygame.rect.Rect(220, 150, 200, 50)
-    quitrect = pygame.rect.Rect(220, 280, 200, 50)
+    state = 1
     mpos = pygame.mouse.get_pos()
 
-    if click:
-        
+    if click: state = 2
+    
+    for button in buttons.sprites():
+        if button.collidepoint(mpos):
+            button.update(state=state)
     
 
 def pausemenu(click = False, click_position = None):
@@ -59,6 +87,8 @@ def pausemenu(click = False, click_position = None):
 
 def gameinit():
     #game initialization function
+    player = pygame.sprite.Sprite(players)
+
 
 def gameexit():
     #game end function
