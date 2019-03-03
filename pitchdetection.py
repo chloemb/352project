@@ -4,7 +4,7 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 
-# humming/voice 800, 100, 1000
+# humming/voice 800, 100, 1000si
 # whistle 800, 1000, 4000
 smoothing_threshold = 800
 lowest_freq = 100

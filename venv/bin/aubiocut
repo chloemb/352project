@@ -1,4 +1,4 @@
-#!/Users/chloe/Desktop/untitled/venv/bin/python
+#!/Users/chloe/Desktop/352project/venv/bin/python
 # EASY-INSTALL-ENTRY-SCRIPT: 'aubio==0.4.9','console_scripts','aubiocut'
 __requires__ = 'aubio==0.4.9'
 import re
