@@ -50,8 +50,12 @@ def maininit():
     '''
     Initialize the main menu
     '''
+    #state switchings
+    gamestate = 0
            
     #Set button locations
+    for bttn in buttons.sprites:
+        bttn.kill()
 
     newrect = button("New Game",(220, 150), (200, 50))
     newrect.add(startbuttons)
@@ -62,35 +66,89 @@ def mainmenu(click = False):
     ''' 
     Looping Main Menu routine
     '''
-    buttonstate = 1
+    #click handling
     mpos = pygame.mouse.get_pos()
-
-    if click: buttonstate = 2
     
     for button in buttons.sprites():
         if button.collidepoint(mpos):
-            button.update(state=buttonstate)
+            if click:
+                button.update(state=2)
+                if startbuttons in button.groups():
+                    calibinit()
+                else:
+                    xit = True
+            else:
+                button.update(state=1)
+        else:
+            button.update(state=0)
 
 def calibinit():
     '''
     Calibration Screen Initialization
     '''
+    for bttn in buttons.sprites:
+        bttn.kill()
+    #state switching
+    gamestate = 1
+
+    #establish buttons
+    newrect = button("Confirm",(220, 150), (200, 50))
+    newrect.add(startbuttons)
+    quitrect = button("Cancel", (220, 280), (200, 50))
+    quitrect.add(quitbuttons)
+
 
 def calibscreen(click = False):
     '''
     Looping Calibration routine
     '''
+    
+    #click handling:
+    mpos = pygame.mouse.get_pos()
+    
+    for button in buttons.sprites():
+        if button.collidepoint(mpos):
+            if click:
+                button.update(state=2)
+                if startbuttons in button.groups():
+                    gameinit()
+                else:
+                    maininit()
+            else:
+                button.update(state=1)
+        else:
+            button.update(state=0)
 
 def gameinit():
     '''
     game initialization function
     '''
+    for bttn in buttons.sprites:
+        bttn.kill()
+
+    #state switching
+    gamestate = 2
+
     player = pygame.sprite.Sprite(playergrp)
+
+def gameunpause():
+    '''
+    Pause menu cleanup and state switching function
+    '''
+    for bttn in buttons.sprites:
+        bttn.kill()
+
+    gamestate=2
 
 def gameexit():
     '''
     Game End function
     '''
+    for bttn in buttons.sprites:
+        bttn.kill()
+
+    #state switching
+    gamestate = 0
 
 def gamescreen(click = False):
     '''
@@ -101,6 +159,12 @@ def pauseinit():
     '''
     Pause Menu Initialization routine
     '''
+    for bttn in buttons.sprites:
+        bttn.kill()
+
+    #state switching
+    gamestate = 3
+
     #establish buttons
     newrect = button("Continue Game",(220, 150), (200, 50))
     newrect.add(startbuttons)
@@ -111,6 +175,19 @@ def pausemenu(click = False):
     '''
     Looping Pause Menu routine
     '''
+    
+    for button in buttons.sprites():
+        if button.collidepoint(mpos):
+            if click:
+                button.update(state=2)
+                if startbuttons in button.groups():
+                    gameunpause()
+                else:
+                    gameexit()
+            else:
+                button.update(state=1)
+        else:
+            button.update(state=0)
 
 #initialize game variables and constants
 pygame.mouse.set_visible(False)
