@@ -4,11 +4,11 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 
-# humming/voice 800, 100, 1000si
+# humming/voice 800, 100, 1000
 # whistle 800, 1000, 4000
-smoothing_threshold = 800
-lowest_freq = 100
-highest_freq = 1000
+lowest_freq = 1000
+highest_freq = 3000
+smoothing_threshold = (highest_freq - lowest_freq)/2
 
 # PyAudio object.
 p = pyaudio.PyAudio()
@@ -27,17 +27,19 @@ pDetection.set_unit("Hz")
 pDetection.set_silence(-40)
 
 # Plotting
-samplenum = 0
-fig = plt.figure()
-plotx = []
-ploty = []
+# samplenum = 0
+# fig = plt.figure()
+# plotx = []
+# ploty = []
 
 start = time.time()
 
 prevsteadypitch = 0.0
 prevpitch = 0.0
 
-while time.time() - start < 10:
+
+
+while True:
     data = stream.read(1024)
     samples = np.fromstring(data, dtype=aubio.float_type)
     pitch = pDetection(samples)[0]
@@ -48,19 +50,26 @@ while time.time() - start < 10:
     # it has six decimal numbers.
     # volume = "{:.6f}".format(volume)
 
-    samplenum += 1
-    plotx.append(samplenum)
-    if prevsteadypitch < lowest_freq and pitch < highest_freq:
-        prevsteadypitch = pitch
-    elif abs(prevsteadypitch - pitch) < smoothing_threshold and prevsteadypitch != 0 and pitch != 0:
-        prevsteadypitch = pitch
+    if not pitch < lowest_freq and not pitch > highest_freq:
+        if prevsteadypitch < lowest_freq and pitch < highest_freq:
+            prevsteadypitch = pitch
+        elif abs(prevsteadypitch - pitch) < smoothing_threshold and prevsteadypitch != 0 and pitch != 0:
+            prevsteadypitch = pitch
 
-    ploty.append(prevsteadypitch)
+    pitchfile = open("pitch.txt", "w+")
+    pitchfile.write(str(prevsteadypitch))
+    pitchfile.close()
+
+    # samplenum += 1
+    # plotx.append(samplenum)
+    # ploty.append(prevsteadypitch)
+
 
     prevpitch = pitch
 
-    print(pitch)
+    print(prevsteadypitch)
     # print(volume)
 
-plt.plot(plotx, ploty)
-plt.show()
+
+# plt.plot(plotx, ploty)
+# plt.show()
