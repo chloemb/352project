@@ -3,7 +3,10 @@ pygame.init()
 
 #helper functions and other definitions
 buttons = pygame.sprite.RenderUpdates()
+quitbuttons = pygame.sprite.Group()
+startbuttons = pygame.sprite.Group()
 
+obstacles = pygame.sprite.RenderUpdates()
 playergrp = pygame.sprite.GroupSingle()
 
 class player(pygame.sprite.Sprite):
@@ -16,7 +19,7 @@ class player(pygame.sprite.Sprite):
 
 class button(pygame.sprite.Sprite):
     def __init__(self, text="", location, shape):
-        pygame.sprite.Sprite.__init__(self,buttons)
+        pygame.sprite.Sprite.__init__(buttons)
         self.text = text
         self.image = pygame.Surface(shape)
         self.image.fill((240,240,240))
@@ -48,8 +51,9 @@ def maininit():
     #Set button locations
 
     newrect = button("New Game",(220, 150), (200, 50))
+    newrect.add(startbuttons)
     quitrect = button("Quit", (220, 280), (200, 50))
-
+    quitrect.add(quitbuttons)
 
 def mainmenu(click = False):
     ''' 
@@ -64,7 +68,7 @@ def mainmenu(click = False):
         if button.collidepoint(mpos):
             button.update(state=buttonstate)
 
-def calibinit(dummy):
+def calibinit():
     '''
     Calibration Screen Initialization
     '''
@@ -81,10 +85,24 @@ def gameinit():
     player = pygame.sprite.Sprite(playergrp)
 
 def gameexit():
-    #game end function
+    '''
+    Game End function
+    '''
 
 def gamescreen(click = False):
-    #looping gamescreen processing
+    '''
+    Looping Game Screen routine
+    '''
+
+def pauseinit():
+    '''
+    Pause Menu Initialization routine
+    '''
+    #establish buttons
+    newrect = button("Continue Game",(220, 150), (200, 50))
+    newrect.add(startbuttons)
+    quitrect = button("Quit", (220, 280), (200, 50))
+    quitrect.add(quitbuttons)
 
 def pausemenu(click = False):
     '''
@@ -125,4 +143,9 @@ while 1:
 
     if gamestate == 0:
         mainmenu(click)
-    if gamestate == 1:
+    elif gamestate == 1:
+        calibscreen(click)
+    elif gamestate == 2:
+        gamescreen(click)
+    elif gamestate == 3:
+        pausemenu(click)
