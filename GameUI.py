@@ -1,27 +1,10 @@
 import sys, pygame
 pygame.init()
 
-
-
-#initialize game variables and constants
-pygame.mouse.set_visible(False)
-xit= False
-gamestate = 0 # 0 = Main Menu, 2 = Game Screen, 3 = Pause Menu
-#load walker frames
-walk = []
-for i in range(8): 
-    walk.append(pygame.image.load("./placeholderwalking/Walk-3-" + str(i) + ".png"))
-walkrect = walk[0].get_rect()
-
-size = width, height = 640, 480
-black = 0, 0, 0
-
-screen = pygame.display.set_mode(size)
-
 #helper functions and other definitions
 buttons = pygame.sprite.RenderUpdates()
 
-players = pygame.sprite.GroupSingle()
+playergrp = pygame.sprite.GroupSingle()
 
 class player(pygame.sprite.Sprite):
     def __init__(self):
@@ -70,31 +53,64 @@ def maininit():
 
 def mainmenu(click = False):
     ''' 
-    looping mainmenu routine
+    Looping Main Menu routine
     '''
-    state = 1
+    buttonstate = 1
     mpos = pygame.mouse.get_pos()
 
-    if click: state = 2
+    if click: buttonstate = 2
     
     for button in buttons.sprites():
         if button.collidepoint(mpos):
-            button.update(state=state)
-    
+            button.update(state=buttonstate)
 
-def pausemenu(click = False, click_position = None):
-    #looping pausemenu routine
+def calibinit(dummy):
+    '''
+    Calibration Screen Initialization
+    '''
+
+def calibscreen(click = False):
+    '''
+    Looping Calibration routine
+    '''
 
 def gameinit():
-    #game initialization function
-    player = pygame.sprite.Sprite(players)
-
+    '''
+    game initialization function
+    '''
+    player = pygame.sprite.Sprite(playergrp)
 
 def gameexit():
     #game end function
 
-def gamescreen(click = False, click_position = None):
+def gamescreen(click = False):
     #looping gamescreen processing
+
+def pausemenu(click = False):
+    '''
+    Looping Pause Menu routine
+    '''
+
+#initialize game variables and constants
+pygame.mouse.set_visible(False)
+xit= False
+gamestate = 0 
+'''
+0 = Main Menu Loop
+1 = Calibration Screen Loop
+2 = Game Loop
+3 = Pause Menu Loop
+'''
+#load walker frames
+walk = []
+for i in range(8): 
+    walk.append(pygame.image.load("./placeholderwalking/Walk-3-" + str(i) + ".png"))
+walkrect = walk[0].get_rect()
+
+size = width, height = 640, 480
+black = 0, 0, 0
+
+screen = pygame.display.set_mode(size)
 
 while 1:
     #initialize loop variables
@@ -106,3 +122,7 @@ while 1:
             cpos = pygame.mouse.get_pos()
             click = True
     if xit: break
+
+    if gamestate == 0:
+        mainmenu(click)
+    if gamestate == 1:
