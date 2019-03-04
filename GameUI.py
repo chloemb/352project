@@ -9,6 +9,9 @@ startbuttons = pygame.sprite.Group()
 obstacles = pygame.sprite.RenderUpdates()
 playergrp = pygame.sprite.GroupSingle()
 
+ubound = -1000000000000000
+lbound = 1000000000000000
+
 class player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self, players)
