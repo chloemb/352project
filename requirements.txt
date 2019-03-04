@@ -2,4 +2,4 @@ PyAudio==0.2.11
 aubio==0.4.9
 matplotlib==3.0.3
 numpy==1.16.2
-pygame=1.9.4
+pygame==1.9.4
