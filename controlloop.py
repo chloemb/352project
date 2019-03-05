@@ -1,10 +1,10 @@
 import sys, pygame, pitchdetection
 from multiprocessing import Process
 
-# humming/voice 800, 100, 1000si
-# whistle 800, 1000, 4000
-low_freq = 100
-high_freq = 500
+# humming/voice approx 100, 500
+# whistle 1000, 3000
+low_freq = 1000
+high_freq = 3000
 
 
 def GameLoop():
@@ -44,7 +44,7 @@ def GameLoop():
 
 
 if __name__ == '__main__':
-    pitchdetection.initpitch()
+    # pitchdetection.initpitch()
 
     a = Process(target=pitchdetection.pitchdetection, args=(high_freq, low_freq))
     a.start()

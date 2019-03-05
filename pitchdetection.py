@@ -4,9 +4,9 @@ import time
 import numpy as np
 
 
-def initpitch():
-    global currentpitch
-    currentpitch = 0
+# def initpitch():
+#     global currentpitch
+#     currentpitch = 0
 
 
 def pitchdetection(highest_freq, lowest_freq):
@@ -50,8 +50,8 @@ def pitchdetection(highest_freq, lowest_freq):
         pitchfile = open("pitch.txt", "w+")
         pitchfile.write(str(prevsteadypitch))
         pitchfile.close()
-
-
-def getcurpitch():
-    global currentpitch
-    return currentpitch
+#
+#
+# def getcurpitch():
+#     global currentpitch
+#     return currentpitch
