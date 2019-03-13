@@ -202,6 +202,10 @@ def calibscreen(click, calib):
         else:
             button.update(state=0)
 
+    '''
+    Calibration prompts
+    '''
+    
     if calibstate is 0:
         CalibLow()
     else:
@@ -284,7 +288,7 @@ def gamescreen(click = False):
         else:
             button.update(state=0)
 
-    debug += "Frequency settings: " + str(lowfreq) + " " + str(highfreq)
+    debug += " Frequency settings: " + str(lowfreq) + " " + str(highfreq)
 
     return debug, newstate
 
