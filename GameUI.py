@@ -7,7 +7,8 @@ quitbuttons = pygame.sprite.GroupSingle()
 startbuttons = pygame.sprite.GroupSingle()
 
 obstacles = pygame.sprite.RenderUpdates()
-playergrp = pygame.sprite.GroupSingle()
+playerupd = pygame.sprite.RenderUpdates()
+playeracc = pygame.sprite.GroupSingle()
 
 menuobjects = pygame.sprite.RenderUpdates()
 menutitle = pygame.sprite.GroupSingle()
@@ -39,6 +40,7 @@ lowfreq = 0
 highfreq = 3000
 volumethreshold = .001
 curpitch = 0
+curheight = 0
 calibstate = 0
 
 '''
@@ -47,11 +49,6 @@ calibstate = 0
 2 = Game Loop
 3 = Pause Menu Loop
 '''
-#load walker frames
-walk = []
-for i in range(8): 
-    walk.append(pygame.image.load("./placeholderwalking/Walk-3-" + str(i) + ".png"))
-walkrect = walk[0].get_rect()
 
 screen = pygame.display.set_mode(size)
 bgd = pygame.image.load("./Assets/bground.png")
@@ -92,11 +89,14 @@ class debug_text(pygame.sprite.Sprite):
 
 class player(pygame.sprite.Sprite):
     def __init__(self):
-        super().__init__(players)
-        self.image = pygame.surface(walkrect)
-        self.image.blit(walk[0],walkrect)
-        self.rect = walkrect
-        self.rect.x = 10
+        super().__init__(playeracc,playerupd)
+        self.image = pygame.image.load("./Assets/rocket.png")
+        self.rect = self.image.get_rect()
+        self.rect.x = 15
+        self.rect.centery = 240
+
+    def update(self):
+        self.rect.centery = curheight
 
 
 class button(pygame.sprite.Sprite):
@@ -147,6 +147,7 @@ def drawscreen(redrawlist = []):
     redrawlist = redrawlist + menuobjects.draw(screen)
     redrawlist = redrawlist + debuginfo.draw(screen)
     redrawlist = redrawlist + buttons.draw(screen)
+    redrawlist = redrawlist + playerupd.draw(screen)
     pygame.display.update(redrawlist)
 
 def maininit():
@@ -279,7 +280,7 @@ def gameinit():
 
     pauserect = button((620, 5), (15, 15), "I")
     pauserect.add(quitbuttons)
-    player = pygame.sprite.Sprite(playergrp)
+    player()
 
 
 def gameunpause():
@@ -294,7 +295,7 @@ def gameexit():
     Game End function
     '''
 
-    playergrp.sprite.kill
+    playeracc.sprite.kill()
     #state switching
 
 
@@ -302,7 +303,7 @@ def gamescreen(click = False):
     '''
     Looping Game Screen routine
     '''
-    global curpitch
+    global curpitch, curheight
 
     debug = ""
     newstate = 2
@@ -327,6 +328,9 @@ def gamescreen(click = False):
 
     # Height to move the player object to
     curheight = height - int((curpitch - lowfreq) / (highfreq - lowfreq) * height)
+
+    playerupd.clear(screen, bgd)
+    playerupd.update()
 
     debug += " Frequency settings: " + "{:.2f}".format(lowfreq) + " " + "{:.2f}".format(highfreq) + \
              " Current pitch: " + "{:.2f}".format(curpitch) + " Current height: " + str(curheight)
