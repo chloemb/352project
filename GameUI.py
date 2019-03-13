@@ -36,17 +36,19 @@ for i in range(8):
 walkrect = walk[0].get_rect()
 
 screen = pygame.display.set_mode(size)
-bgd = pygame.Surface(size)
+bgd = pygame.image.load("./Assets/bground.png")
+screen.blit(bgd, (0,0))
+pygame.display.update()
 
 class debug_text(pygame.sprite.Sprite):
     def __init__(self, location, text=""):
         super().__init__(debuginfo)
         self.text = text
-        self.image = fontobj.render(self.text, True,(255,255,255),black)
+        self.image = fontobj.render(self.text, True,(255,255,255))
         self.rect = self.image.get_rect()
 
     def update(self):
-        self.image = fontobj.render(self.text, True,(255,255,255),black)
+        self.image = fontobj.render(self.text, True,(255,255,255))
         self.rect = self.image.get_rect()
 
 class player(pygame.sprite.Sprite):
@@ -193,7 +195,7 @@ def gameinit():
     '''
     game initialization function
     '''
-    screen.fill(black)
+    
     pauserect = button((625,0), (15, 15), "II")
     pauserect.add(quitbuttons)
     player = pygame.sprite.Sprite(playergrp)
