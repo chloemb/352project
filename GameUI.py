@@ -77,7 +77,7 @@ class button(pygame.sprite.Sprite):
         '''
         #update state variables
         if state != None:
-            self.state == state
+            self.state = state
         if text != None:
             self.text = text
 
