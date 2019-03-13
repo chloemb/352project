@@ -7,7 +7,8 @@ quitbuttons = pygame.sprite.GroupSingle()
 startbuttons = pygame.sprite.GroupSingle()
 
 obstacles = pygame.sprite.RenderUpdates()
-playergrp = pygame.sprite.GroupSingle()
+playerupd = pygame.sprite.RenderUpdates()
+playeracc = pygame.sprite.GroupSingle()
 
 menuobjects = pygame.sprite.RenderUpdates()
 menutitle = pygame.sprite.GroupSingle()
@@ -27,6 +28,7 @@ size = width, height = 640, 480
 black = 0, 0, 0
 white = 255, 255, 255
 #initialize game variables and constants
+curheight = 0
 pygame.mouse.set_visible(True)
 xit= False
 gamestate = 0 
@@ -36,14 +38,10 @@ gamestate = 0
 2 = Game Loop
 3 = Pause Menu Loop
 '''
-#load walker frames
-walk = []
-for i in range(8): 
-    walk.append(pygame.image.load("./placeholderwalking/Walk-3-" + str(i) + ".png"))
-walkrect = walk[0].get_rect()
 
 screen = pygame.display.set_mode(size)
 bgd = pygame.image.load("./Assets/bground.png")
+
 screen.blit(bgd, (0,0))
 pygame.display.update()
 
@@ -79,11 +77,14 @@ class debug_text(pygame.sprite.Sprite):
 
 class player(pygame.sprite.Sprite):
     def __init__(self):
-        super().__init__(players)
-        self.image = pygame.surface(walkrect)
-        self.image.blit(walk[0],walkrect)
-        self.rect = walkrect
-        self.rect.x = 10
+        super().__init__(playeracc,playerupd)
+        self.image = pygame.image.load("./Assets/rocket.png")
+        self.rect = self.image.get_rect()
+        self.rect.x = 15
+        self.rect.centery = 240
+
+    def update(self):
+        self.rect.centery = curheight[1]
 
 class button(pygame.sprite.Sprite):
     def __init__(self, location, shape, text=""):
@@ -134,6 +135,7 @@ def drawscreen(redrawlist = []):
     redrawlist = redrawlist + menuobjects.draw(screen)
     redrawlist = redrawlist + debuginfo.draw(screen)
     redrawlist = redrawlist + buttons.draw(screen)
+    redrawlist = redrawlist + playerupd.draw(screen)
     pygame.display.update(redrawlist)
 
 def maininit():
@@ -239,7 +241,7 @@ def gameinit():
 
     pauserect = button((620,5), (15, 15), "I")
     pauserect.add(quitbuttons)
-    player = pygame.sprite.Sprite(playergrp)
+    p = player()
 
 def gameunpause():
     '''
@@ -260,6 +262,9 @@ def gamescreen(click = False):
     '''
     Looping Game Screen routine
     '''
+    playerupd.clear(screen,bgd)
+    playerupd.update()
+
     debug = ""
     newstate = 2
     mpos = pygame.mouse.get_pos()
@@ -296,7 +301,7 @@ def pausemenu(click = False):
     newstate = 3
     debug = ""
     
-    mpos = pygame.mouse.get_pos()
+    mpos = pygame.mouse.get_pos().x
     for button in buttons.sprites():
         if button.collidepoint(mpos):
             debug = button.text
@@ -354,7 +359,7 @@ while 1:
         else: break
 
     gamestate = newstate
-
+    curheight = pygame.mouse.get_pos()
 
     if gamestate == 0:
         debug, newstate = mainmenu(click)
