@@ -12,6 +12,11 @@ playergrp = pygame.sprite.GroupSingle()
 ubound = -1000000000000000
 lbound = 1000000000000000
 
+fontobj = pygame.font.SysFont("Arial",11, 1)
+
+size = width, height = 640, 480
+black = 0, 0, 0
+
 class player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self, players)
@@ -23,20 +28,35 @@ class player(pygame.sprite.Sprite):
 class button(pygame.sprite.Sprite):
     def __init__(self, text="", location, shape):
         pygame.sprite.Sprite.__init__(buttons)
+        #set initial state
+        self.state = 0 # 0 normal, 1 hover, 2 clicked
         self.text = text
+        #create image canvas and fill image with background color
         self.image = pygame.Surface(shape)
-        self.image.fill((240,240,240))
+        #get rect for button and set location of button
         self.rect = pygame.Surface.get_rect(self.image)
         self.rect.topleft = location
-        self.state = 0 # 0 normal, 1 hover, 2 clicked
-    
+        #write text to the button
+        self.update()
+
     def update(self, state = None, text = None):
+        '''
+        Appearance updating helper function, used for updates and for initialization
+        '''
+        #update state variables
         if not state == None:
             self.state == state
         if not text == None:
             self.text = text
-        rgb = 240 - (state * 40)
-        self.image.fill((rgb,rgb,rgb))
+
+        #refill background
+        bg = 240 - (self.state * 40)
+        self.image.fill((bg,bg,bg))
+        #redraw text
+        textimg = fontobj.render(self.text, True,black,(bg,bg,bg))
+        textrect = textimg.get_rect()
+        textrect.center = self.rect.center
+        self.image.blit(textimg, textrect)
         
 
     def collidepoint(self,pos):
@@ -205,8 +225,6 @@ for i in range(8):
     walk.append(pygame.image.load("./placeholderwalking/Walk-3-" + str(i) + ".png"))
 walkrect = walk[0].get_rect()
 
-size = width, height = 640, 480
-black = 0, 0, 0
 
 screen = pygame.display.set_mode(size)
 
@@ -215,7 +233,9 @@ while 1:
     click = False
     #check events    
     for event in pygame.event.get():
+        #quit detect
         if event.type == pygame.QUIT: xit = True
+        #click detect
         if event.type == pygame.MOUSEBUTTONUP & event:
             cpos = pygame.mouse.get_pos()
             click = True
