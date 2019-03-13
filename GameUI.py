@@ -76,9 +76,9 @@ class button(pygame.sprite.Sprite):
         Appearance updating helper function, used for updates and for initialization
         '''
         #update state variables
-        if not state == None:
+        if state != None:
             self.state == state
-        if not text == None:
+        if text != None:
             self.text = text
 
         #refill background
