@@ -1,1 +1,4 @@
 [Vv]env
+pitch.txt
+__pycache__
+__pycache__/pitchdetection.cpython-37.pyc
