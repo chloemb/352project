@@ -49,6 +49,8 @@ def pitchdetection(lowest_freq, highest_freq, volume_threshold):
 
         # print(volume)
 
+        # print(prevsteadypitch)
+
         pitchfile = open("pitch.txt", "w+")
         pitchfile.write(str(prevsteadypitch))
         pitchfile.close()

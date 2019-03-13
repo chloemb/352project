@@ -1,4 +1,4 @@
-import sys, pygame
+import sys, pygame, pitchdetection, threading
 pygame.init()
 
 #helper functions and other definitions
@@ -15,14 +15,23 @@ ubound = -1000000000000000
 lbound = 1000000000000000
 
 fontobj = pygame.font.SysFont("Arial",11, 1)
+pygame.font.init()
+myfont = pygame.font.Font("Assets/JosefinSans-Regular.ttf", 30)
 
 size = width, height = 640, 480
 black = 0, 0, 0
+white = 255,255,255
 
 #initialize game variables and constants
 pygame.mouse.set_visible(True)
 xit= False
-gamestate = 0 
+gamestate = 0
+lowfreq = 0
+highfreq = 3000
+volumethreshold = .001
+curpitch = 0
+calibstate = 0
+
 '''
 0 = Main Menu Loop
 1 = Calibration Screen Loop
@@ -149,7 +158,7 @@ def calibinit():
     Calibration Screen Initialization
     '''
     #establish buttons
-    newrect = button((220, 150), (200, 50), "Confirm High Note")
+    newrect = button((220, 150), (200, 50), "Confirm Low Note")
     newrect.add(startbuttons)
     quitrect = button((220, 280), (200, 50), "Cancel")
     quitrect.add(quitbuttons)
@@ -158,6 +167,8 @@ def calibscreen(click, calib):
     '''
     Looping Calibration routine
     '''
+    global calibstate
+
     #click handling:
     mpos = pygame.mouse.get_pos()
     debug = ""
@@ -172,13 +183,17 @@ def calibscreen(click, calib):
                         newstate = 2
                         calib = (True, True)
                     else:
-                        button.update(text="Confirm Low Note")
-                        quitbuttons.sprite.update(text = "Redo High Note")
+                        button.update(text="Confirm High Note")
+                        quitbuttons.sprite.update(text = "Redo Low Note")
+                        print("switching calibstate to 1")
+                        calibstate = 1
                         calib = (True,False)
                 elif button in quitbuttons:
                     if calib[0]:
-                        startbuttons.sprite.update(text="Confirm High Note")
+                        startbuttons.sprite.update(text="Confirm Low Note")
                         quitbuttons.sprite.update(text = "Cancel")
+                        print("switching calibstate to 0")
+                        calibstate = 0
                         calib = (False,False)
                     else:
                         newstate = 0
@@ -187,7 +202,44 @@ def calibscreen(click, calib):
         else:
             button.update(state=0)
 
+    if calibstate is 0:
+        CalibLow()
+    else:
+        CalibHigh()
+
     return debug, newstate, calib
+
+def CalibLow():
+    global curpitch, lowfreq
+    topmargin = 10
+
+    readpitch = GetPitch()
+    if readpitch is not "":
+        curpitch = float(readpitch)
+    lowfreq = curpitch
+
+    screen.fill(black)
+    textsurface = myfont.render('Sing or hum a low note', False, white)
+    screen.blit(textsurface, (width / 2 - textsurface.get_width() / 2, topmargin))
+    frequency = myfont.render("{:.2f}".format(curpitch), False, white)
+    screen.blit(frequency, (width / 2 - frequency.get_width() / 2, topmargin +  textsurface.get_height()))
+    pygame.display.flip()
+
+def CalibHigh():
+    global curpitch, highfreq
+    topmargin = 10
+
+    readpitch = GetPitch()
+    if readpitch is not "":
+        curpitch = float(readpitch)
+    highfreq = curpitch
+
+    screen.fill(black)
+    textsurface = myfont.render('Sing or hum a high note', False, white)
+    screen.blit(textsurface, (width / 2 - textsurface.get_width() / 2, topmargin))
+    frequency = myfont.render("{:.2f}".format(curpitch), False, white)
+    screen.blit(frequency, (width / 2 - frequency.get_width() / 2, topmargin + textsurface.get_height()))
+    pygame.display.flip()
     
 def gameinit():
     '''
@@ -232,6 +284,8 @@ def gamescreen(click = False):
         else:
             button.update(state=0)
 
+    debug += "Frequency settings: " + str(lowfreq) + " " + str(highfreq)
+
     return debug, newstate
 
 def pauseinit():
@@ -267,6 +321,20 @@ def pausemenu(click = False):
             button.update(state=0)
     return debug, newstate
 
+def GetPitch():
+    # read the pitch file
+    pitchfile = open("pitch.txt", "r")
+    readpitch = pitchfile.readline()
+    pitchfile.close()
+    return readpitch
+
+
+if __name__ == '__main__':
+    t1 = threading.Thread(target=pitchdetection.pitchdetection, args=[lowfreq, highfreq, volumethreshold])
+    t1.start()
+
+# def GameLoop():
+
 #first time initialization
 maininit()
 dbinfo = debug_text((0,0))
@@ -276,7 +344,7 @@ newstate = 0
 while 1:
     #initialize loop variables
     click = False
-    #check events    
+    #check events
     for event in pygame.event.get():
         #quit detect
         if event.type == pygame.QUIT: xit = True
@@ -284,7 +352,7 @@ while 1:
         if event.type == pygame.MOUSEBUTTONUP:
             click = True
     if xit: break
-    
+
     debug = ""
     if newstate != gamestate:
         #clear buttons
