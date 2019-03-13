@@ -9,16 +9,23 @@ startbuttons = pygame.sprite.GroupSingle()
 obstacles = pygame.sprite.RenderUpdates()
 playergrp = pygame.sprite.GroupSingle()
 
+menuobjects = pygame.sprite.RenderUpdates()
+menutitle = pygame.sprite.GroupSingle()
+menupitch = pygame.sprite.GroupSingle()
+
 debuginfo = pygame.sprite.RenderUpdates()
 
 ubound = -1000000000000000
 lbound = 1000000000000000
 
-fontobj = pygame.font.SysFont("Arial",11, 1)
+debugfont = pygame.font.SysFont("Consolas", 12, 1)
+buttonfont = pygame.font.SysFont("Arial", 24, 1)
+headerfont = pygame.font.SysFont("Verdana",48, 1)
+subheaderfont = pygame.font.SysFont("Verdana",24, 1)
 
 size = width, height = 640, 480
 black = 0, 0, 0
-
+white = 255, 255, 255
 #initialize game variables and constants
 pygame.mouse.set_visible(True)
 xit= False
@@ -40,16 +47,35 @@ bgd = pygame.image.load("./Assets/bground.png")
 screen.blit(bgd, (0,0))
 pygame.display.update()
 
+class menu_title(pygame.sprite.Sprite):
+    def __init__(self, center, titleType, text=""):
+        super().__init__(menuobjects)
+        self.text = text
+        if titleType == "Header":
+            self.font = headerfont
+        elif titleType == "Subheader":
+            self.font = subheaderfont
+        self.center = center
+        self.update()
+
+    def update(self, text = None):
+        if text != None:
+            self.text = text
+        self.image = self.font.render(self.text, True, white)
+        self.rect = self.image.get_rect()
+        self.rect.center = self.center
+
 class debug_text(pygame.sprite.Sprite):
     def __init__(self, location, text=""):
         super().__init__(debuginfo)
         self.text = text
-        self.image = fontobj.render(self.text, True,(255,255,255))
-        self.rect = self.image.get_rect()
+        self.loca = location
+        self.update()
 
     def update(self):
-        self.image = fontobj.render(self.text, True,(255,255,255))
+        self.image = debugfont.render(self.text, True, white)
         self.rect = self.image.get_rect()
+        self.rect.topleft = self.loca
 
 class player(pygame.sprite.Sprite):
     def __init__(self):
@@ -87,7 +113,7 @@ class button(pygame.sprite.Sprite):
         bg = 240 - (self.state * 40)
         self.image.fill((bg,bg,bg))
         #redraw text
-        textimg = fontobj.render(self.text, True,black,(bg,bg,bg))
+        textimg = buttonfont.render(self.text, True,black,(bg,bg,bg))
         textrect = textimg.get_rect()
  
         textrect.center = (self.rect.width//2,self.rect.height//2)
@@ -104,6 +130,8 @@ def drawscreen(redrawlist = []):
     
     debuginfo.clear(screen,bgd)
     debuginfo.update()
+    menuobjects.clear(screen,bgd)
+    redrawlist = redrawlist + menuobjects.draw(screen)
     redrawlist = redrawlist + debuginfo.draw(screen)
     redrawlist = redrawlist + buttons.draw(screen)
     pygame.display.update(redrawlist)
@@ -117,9 +145,11 @@ def maininit():
     for bttn in buttons.sprites():
         bttn.kill()
 
-    newrect = button((220, 150), (200, 50), "New Game")
+    mainheader = menu_title((320, 100),"Header","Main Menu")
+    mainheader.add(menutitle)
+    newrect = button((220, 200), (200, 50), "New Game")
     newrect.add(startbuttons)
-    quitrect = button((220, 280), (200, 50), "Quit")
+    quitrect = button((220, 300), (200, 50), "Quit")
     quitrect.add(quitbuttons)
 
 def mainmenu(click = False):
@@ -151,15 +181,26 @@ def calibinit():
     Calibration Screen Initialization
     '''
     #establish buttons
-    newrect = button((220, 150), (200, 50), "Confirm High Note")
+    mainheader = menu_title((320, 80),"Header","Calibrate High Note")
+    mainheader.add(menutitle)
+    pitchheader = menu_title((320, 150), "Subheader", "Pitch: Note_Goes_Here Hz")
+    pitchheader.add(menupitch)
+    newrect = button((220, 200), (200, 50), "Confirm")
     newrect.add(startbuttons)
-    quitrect = button((220, 280), (200, 50), "Cancel")
+    quitrect = button((220, 300), (200, 50), "Cancel")
     quitrect.add(quitbuttons)
     
 def calibscreen(click, calib):
     '''
     Looping Calibration routine
     '''
+
+    #insert real time instantaneous pitch detection code here
+    #
+    #
+    pitch = "Note_Goes_Here"
+
+    menupitch.sprite.update("Pitch: " + pitch + " Hz")
     #click handling:
     mpos = pygame.mouse.get_pos()
     debug = ""
@@ -174,12 +215,12 @@ def calibscreen(click, calib):
                         newstate = 2
                         calib = (True, True)
                     else:
-                        button.update(text="Confirm Low Note")
+                        menutitle.sprite.update("Confirm Low Note")
                         quitbuttons.sprite.update(text = "Redo High Note")
                         calib = (True,False)
                 elif button in quitbuttons:
                     if calib[0]:
-                        startbuttons.sprite.update(text="Confirm High Note")
+                        menutitle.sprite.update("Confirm High Note")
                         quitbuttons.sprite.update(text = "Cancel")
                         calib = (False,False)
                     else:
@@ -195,8 +236,8 @@ def gameinit():
     '''
     game initialization function
     '''
-    
-    pauserect = button((625,0), (15, 15), "II")
+
+    pauserect = button((620,5), (15, 15), "I")
     pauserect.add(quitbuttons)
     player = pygame.sprite.Sprite(playergrp)
 
@@ -204,7 +245,7 @@ def gameunpause():
     '''
     Pause menu cleanup and state switching function
     '''
-    pauserect = button((625,0), (15, 15), "II")
+    pauserect = button((620,5), (15, 15), "I")
     pauserect.add(quitbuttons)
 
 def gameexit():
@@ -241,9 +282,11 @@ def pauseinit():
     Pause Menu Initialization routine
     '''
     #establish buttons
-    newrect = button((220, 150), (200, 50), "Continue Game")
+    mainheader = menu_title((320, 100),"Header","Game Paused")
+    mainheader.add(menutitle)
+    newrect = button((220, 200), (200, 50), "Continue Game")
     newrect.add(startbuttons)
-    quitrect = button((220, 280), (200, 50), "Quit")
+    quitrect = button((220, 300), (200, 50), "Quit")
     quitrect.add(quitbuttons)
 
 def pausemenu(click = False):
@@ -289,7 +332,10 @@ while 1:
     
     debug = ""
     if newstate != gamestate:
-        #clear buttons
+        #clear buttons and old header
+        menuobjects.clear(screen, bgd)
+        for header in menuobjects:
+            header.kill()
         buttons.clear(screen,bgd)
         for bttn in buttons.sprites():
             bttn.kill()
