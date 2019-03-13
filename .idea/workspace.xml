@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="51f818e4-ee95-4542-a52e-423bc8f673ba" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GameUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/GameUI.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pitch.txt" beforeDir="false" afterPath="$PROJECT_DIR$/pitch.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -12,7 +15,7 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/352project$gametest.coverage" NAME="controlloop Coverage Results" MODIFIED="1551742465539" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/352project$GameUI.coverage" NAME="GameUI Coverage Results" MODIFIED="1552466003090" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/352project$GameUI.coverage" NAME="GameUI Coverage Results" MODIFIED="1552469606372" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/352project$controlloop.coverage" NAME="controlloop Coverage Results" MODIFIED="1552461500456" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="DatabaseView">
@@ -39,7 +42,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pitchdetection.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="265">
+            <state relative-caret-position="765">
               <caret line="51" column="10" selection-start-line="51" selection-start-column="10" selection-end-line="51" selection-end-column="10" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
@@ -51,8 +54,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controlloop.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="400">
-              <caret line="121" column="29" lean-forward="true" selection-start-line="121" selection-start-column="29" selection-end-line="121" selection-end-column="29" />
+            <state relative-caret-position="175">
+              <caret line="106" column="8" lean-forward="true" selection-start-line="106" selection-start-column="8" selection-end-line="111" selection-end-column="83" />
               <folding>
                 <element signature="e#0#40#0" expanded="true" />
               </folding>
@@ -63,8 +66,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/GameUI.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="287">
-              <caret line="207" column="4" selection-start-line="207" selection-start-column="4" selection-end-line="207" selection-end-column="4" />
+            <state relative-caret-position="1962">
+              <caret line="332" lean-forward="true" selection-start-line="332" selection-end-line="332" />
             </state>
           </provider>
         </entry>
@@ -83,6 +86,7 @@
       <find>players</find>
       <find>xit</find>
       <find>calibscreen</find>
+      <find>menutitle</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -97,14 +101,14 @@
         <option value="$PROJECT_DIR$/gametest.py" />
         <option value="$PROJECT_DIR$/controlloop.py" />
         <option value="$PROJECT_DIR$/pitchdetection.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
         <option value="$PROJECT_DIR$/GameUI.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="85" />
     <option name="y" value="23" />
-    <option name="width" value="1355" />
+    <option name="width" value="1440" />
     <option name="height" value="866" />
   </component>
   <component name="ProjectView">
@@ -133,6 +137,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Python" />
     <property name="full.screen.before.presentation.mode" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -227,6 +232,9 @@
       <module name="untitled" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="/usr/bin/python2.7" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
@@ -268,11 +276,12 @@
       <workItem from="1551811126213" duration="2000" />
       <workItem from="1551811130730" duration="7749000" />
       <workItem from="1552461663709" duration="4665000" />
+      <workItem from="1552467769061" duration="1916000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="28709000" />
+    <option name="totallyTimeSpent" value="30625000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -284,10 +293,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="85" y="23" width="1355" height="866" extended-state="0" />
+    <frame x="0" y="23" width="1440" height="866" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1408987" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22389127" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -363,7 +372,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pitchdetection.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="265">
+        <state relative-caret-position="765">
           <caret line="51" column="10" selection-start-line="51" selection-start-column="10" selection-end-line="51" selection-end-column="10" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
@@ -371,10 +380,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="172">
+          <caret line="353" column="34" lean-forward="true" selection-start-line="348" selection-start-column="4" selection-end-line="353" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/controlloop.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="121" column="29" lean-forward="true" selection-start-line="121" selection-start-column="29" selection-end-line="121" selection-end-column="29" />
+        <state relative-caret-position="175">
+          <caret line="106" column="8" lean-forward="true" selection-start-line="106" selection-start-column="8" selection-end-line="111" selection-end-column="83" />
           <folding>
             <element signature="e#0#40#0" expanded="true" />
           </folding>
@@ -383,8 +399,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/GameUI.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="287">
-          <caret line="207" column="4" selection-start-line="207" selection-start-column="4" selection-end-line="207" selection-end-column="4" />
+        <state relative-caret-position="1962">
+          <caret line="332" lean-forward="true" selection-start-line="332" selection-end-line="332" />
         </state>
       </provider>
     </entry>
