@@ -84,7 +84,7 @@ class player(pygame.sprite.Sprite):
         self.rect.centery = 240
 
     def update(self):
-        self.rect.centery = curheight[1]
+        self.rect.centery = curheight
 
 class button(pygame.sprite.Sprite):
     def __init__(self, location, shape, text=""):
@@ -241,7 +241,7 @@ def gameinit():
 
     pauserect = button((620,5), (15, 15), "I")
     pauserect.add(quitbuttons)
-    p = player()
+    player()
 
 def gameunpause():
     '''
@@ -255,7 +255,7 @@ def gameexit():
     Game End function
     '''
 
-    playergrp.sprite.kill
+    playeracc.sprite.kill()
     #state switching
 
 def gamescreen(click = False):
@@ -359,7 +359,7 @@ while 1:
         else: break
 
     gamestate = newstate
-    curheight = pygame.mouse.get_pos()
+    curheight = pygame.mouse.get_pos()[1]
 
     if gamestate == 0:
         debug, newstate = mainmenu(click)
