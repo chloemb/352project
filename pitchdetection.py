@@ -4,7 +4,7 @@ import time
 import numpy as np
 
 
-def pitchdetection(lowest_freq, highest_freq):
+def pitchdetection(lowest_freq, highest_freq, volume_threshold):
     print(lowest_freq, highest_freq)
     # smoothing_threshold = (highest_freq - lowest_freq) / 2
 
@@ -37,7 +37,7 @@ def pitchdetection(lowest_freq, highest_freq):
         # it has six decimal numbers.
         volume = "{:.6f}".format(volume)
 
-        if float(volume) > .001:
+        if float(volume) > volume_threshold:
             if not pitch < lowest_freq and not pitch > highest_freq:
                 # if prevsteadypitch < lowest_freq and pitch < highest_freq:
                 #     prevsteadypitch = pitch
