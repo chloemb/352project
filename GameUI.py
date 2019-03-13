@@ -24,7 +24,7 @@ myfont = pygame.font.Font("Assets/JosefinSans-Regular.ttf", 30)
 
 debugfont = pygame.font.SysFont("Consolas", 12, 1)
 buttonfont = pygame.font.SysFont("Arial", 24, 1)
-headerfont = pygame.font.SysFont("Verdana", 48, 1)
+headerfont = pygame.font.SysFont("Verdana", 44, 1)
 subheaderfont = pygame.font.SysFont("Verdana", 24, 1)
 
 size = width, height = 640, 480
@@ -193,7 +193,7 @@ def calibinit():
     Calibration Screen Initialization
     '''
     #establish buttons
-    mainheader = menu_title((320, 80), "Header", "Calibrate Low Note")
+    mainheader = menu_title((320, 80), "Header", "Sing or Hum a Low Note")
     mainheader.add(menutitle)
     pitchheader = menu_title((320, 150), "Subheader", "Pitch: Note_Goes_Here Hz")
     pitchheader.add(menupitch)
@@ -211,11 +211,11 @@ def calibscreen(click, calib):
     global calibstate
     pitch = "Note_Goes_Here"
     if calibstate is 0:
-        menutitle.sprite.update("Calibrate Low Note")
+        menutitle.sprite.update("Sing or Hum a Low Note")
         CalibLow()
         pitch = lowfreq
     elif calibstate is 1:
-        menutitle.sprite.update("Calibrate High Note")
+        menutitle.sprite.update("Sing or Hum a High Note")
         CalibHigh()
         pitch = highfreq
 
@@ -393,7 +393,7 @@ dbinfo = debug_text((0,0))
 calib = (False, False)
 #game while loop
 newstate = 0
-while 1:
+while not xit:
     #initialize loop variables
     click = False
     #check events
@@ -403,7 +403,6 @@ while 1:
         #click detect
         if event.type == pygame.MOUSEBUTTONUP:
             click = True
-    if xit: break
 
     debug = ""
     if newstate != gamestate:
@@ -426,7 +425,7 @@ while 1:
                 gameunpause()
         elif newstate == 3:
             pauseinit()
-        else: break
+        else: xit = True
 
     gamestate = newstate
 
