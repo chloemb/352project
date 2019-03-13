@@ -17,6 +17,24 @@ fontobj = pygame.font.SysFont("Arial",11, 1)
 size = width, height = 640, 480
 black = 0, 0, 0
 
+#initialize game variables and constants
+pygame.mouse.set_visible(False)
+xit= False
+gamestate = 0 
+'''
+0 = Main Menu Loop
+1 = Calibration Screen Loop
+2 = Game Loop
+3 = Pause Menu Loop
+'''
+#load walker frames
+walk = []
+for i in range(8): 
+    walk.append(pygame.image.load("./placeholderwalking/Walk-3-" + str(i) + ".png"))
+walkrect = walk[0].get_rect()
+
+screen = pygame.display.set_mode(size)
+
 class player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self, players)
@@ -66,6 +84,10 @@ class button(pygame.sprite.Sprite):
         return self.rect.collidepoint(pos)
 
 
+def drawscreen():
+    redrawlist = buttons.draw(screen)
+    pygame.display.update(redrawlist)
+
 def maininit():
     '''
     Initialize the main menu
@@ -81,6 +103,8 @@ def maininit():
     newrect.add(startbuttons)
     quitrect = button("Quit", (220, 280), (200, 50))
     quitrect.add(quitbuttons)
+
+    buttons.draw(screen)
 
 def mainmenu(click = False):
     ''' 
@@ -102,6 +126,8 @@ def mainmenu(click = False):
         else:
             button.update(state=0)
 
+    drawscreen()
+
 def calibinit():
     '''
     Calibration Screen Initialization
@@ -116,7 +142,8 @@ def calibinit():
     newrect.add(startbuttons)
     quitrect = button("Cancel", (220, 280), (200, 50))
     quitrect.add(quitbuttons)
-
+    
+    drawscreen()
 
 def calibscreen(click = False):
     '''
@@ -139,6 +166,9 @@ def calibscreen(click = False):
         else:
             button.update(state=0)
 
+    
+    drawscreen()
+
 def gameinit():
     '''
     game initialization function
@@ -151,6 +181,9 @@ def gameinit():
 
     player = pygame.sprite.Sprite(playergrp)
 
+    
+    drawscreen()
+
 def gameunpause():
     '''
     Pause menu cleanup and state switching function
@@ -159,6 +192,8 @@ def gameunpause():
         bttn.kill()
 
     gamestate=2
+    
+    drawscreen()
 
 def gameexit():
     '''
@@ -169,11 +204,15 @@ def gameexit():
 
     #state switching
     gamestate = 0
+    
+    drawscreen()
 
 def gamescreen(click = False):
     '''
     Looping Game Screen routine
     '''
+    
+    drawscreen()
 
 def pauseinit():
     '''
@@ -190,6 +229,8 @@ def pauseinit():
     newrect.add(startbuttons)
     quitrect = button("Quit", (220, 280), (200, 50))
     quitrect.add(quitbuttons)
+
+    drawscreen()
 
 def pausemenu(click = False):
     '''
@@ -208,26 +249,10 @@ def pausemenu(click = False):
                 button.update(state=1)
         else:
             button.update(state=0)
+            
+    drawscreen()
 
-#initialize game variables and constants
-pygame.mouse.set_visible(False)
-xit= False
-gamestate = 0 
-'''
-0 = Main Menu Loop
-1 = Calibration Screen Loop
-2 = Game Loop
-3 = Pause Menu Loop
-'''
-#load walker frames
-walk = []
-for i in range(8): 
-    walk.append(pygame.image.load("./placeholderwalking/Walk-3-" + str(i) + ".png"))
-walkrect = walk[0].get_rect()
-
-
-screen = pygame.display.set_mode(size)
-
+#game while loop
 while 1:
     #initialize loop variables
     click = False
