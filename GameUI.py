@@ -22,7 +22,7 @@ lbound = 1000000000000000
 pygame.font.init()
 myfont = pygame.font.Font("Assets/JosefinSans-Regular.ttf", 30)
 
-debugfont = pygame.font.SysFont("Consolas", 12, 1)
+debugfont = pygame.font.Font("./Assets/Consolas.ttf", 12, 1)
 buttonfont = pygame.font.SysFont("Arial", 24, 1)
 headerfont = pygame.font.SysFont("Verdana", 44, 1)
 subheaderfont = pygame.font.SysFont("Verdana", 24, 1)
