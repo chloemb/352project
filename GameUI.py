@@ -3,8 +3,8 @@ pygame.init()
 
 #helper functions and other definitions
 buttons = pygame.sprite.RenderUpdates()
-quitbuttons = pygame.sprite.Group()
-startbuttons = pygame.sprite.Group()
+quitbuttons = pygame.sprite.GroupSingle()
+startbuttons = pygame.sprite.GroupSingle()
 
 obstacles = pygame.sprite.RenderUpdates()
 playergrp = pygame.sprite.GroupSingle()
@@ -149,12 +149,12 @@ def calibinit():
     Calibration Screen Initialization
     '''
     #establish buttons
-    newrect = button((220, 150), (200, 50), "Confirm")
+    newrect = button((220, 150), (200, 50), "Confirm High Note")
     newrect.add(startbuttons)
     quitrect = button((220, 280), (200, 50), "Cancel")
     quitrect.add(quitbuttons)
     
-def calibscreen(click = False):
+def calibscreen(click, calib):
     '''
     Looping Calibration routine
     '''
@@ -168,15 +168,26 @@ def calibscreen(click = False):
             if click:
                 button.update(state=2)
                 if button in startbuttons:
-                    newstate = 2
+                    if calib[0]:
+                        newstate = 2
+                        calib = (True, True)
+                    else:
+                        button.update(text="Confirm Low Note")
+                        quitbuttons.sprite.update(text = "Redo High Note")
+                        calib = (True,False)
                 elif button in quitbuttons:
-                    newstate = 0
+                    if calib[0]:
+                        startbuttons.sprite.update(text="Confirm High Note")
+                        quitbuttons.sprite.update(text = "Cancel")
+                        calib = (False,False)
+                    else:
+                        newstate = 0
             else:
                 button.update(state=1)
         else:
             button.update(state=0)
 
-    return debug, newstate
+    return debug, newstate, calib
     
 def gameinit():
     '''
@@ -256,9 +267,10 @@ def pausemenu(click = False):
             button.update(state=0)
     return debug, newstate
 
-#first time initialization of menu
+#first time initialization
 maininit()
 dbinfo = debug_text((0,0))
+calib = (False, False)
 #game while loop
 newstate = 0
 while 1:
@@ -282,6 +294,7 @@ while 1:
         if newstate == 0:
             maininit()
         elif newstate == 1:
+            calib = (False, False)
             calibinit()
         elif newstate == 2:
             if gamestate == 1:
@@ -294,10 +307,11 @@ while 1:
 
     gamestate = newstate
 
+
     if gamestate == 0:
         debug, newstate = mainmenu(click)
     elif gamestate == 1:
-        debug, newstate = calibscreen(click)
+        debug, newstate, calib = calibscreen(click, calib)
     elif gamestate == 2:
         debug, newstate = gamescreen(click)
     elif gamestate == 3:
