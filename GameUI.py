@@ -19,7 +19,6 @@ debuginfo = pygame.sprite.RenderUpdates()
 ubound = -1000000000000000
 lbound = 1000000000000000
 
-fontobj = pygame.font.SysFont("Arial",11, 1)
 pygame.font.init()
 myfont = pygame.font.Font("Assets/JosefinSans-Regular.ttf", 30)
 
@@ -79,11 +78,10 @@ class debug_text(pygame.sprite.Sprite):
     def __init__(self, location, text=""):
         super().__init__(debuginfo)
         self.text = text
-        self.image = fontobj.render(self.text, True,(255,255,255),black)
-        self.rect = self.image.get_rect()
+        self.update()
 
     def update(self):
-        self.image = fontobj.render(self.text, True,(255,255,255),black)
+        self.image = debugfont.render(self.text, True,(255,255,255),black)
         self.rect = self.image.get_rect()
 
 
@@ -127,7 +125,7 @@ class button(pygame.sprite.Sprite):
         bg = 240 - (self.state * 40)
         self.image.fill((bg,bg,bg))
         #redraw text
-        textimg = fontobj.render(self.text, True,black,(bg,bg,bg))
+        textimg = buttonfont.render(self.text, True,black,(bg,bg,bg))
         textrect = textimg.get_rect()
  
         textrect.center = (self.rect.width//2,self.rect.height//2)
