@@ -22,14 +22,16 @@ lbound = 1000000000000000
 pygame.font.init()
 myfont = pygame.font.Font("Assets/JosefinSans-Regular.ttf", 30)
 
-debugfont = pygame.font.Font("./Assets/Consolas.ttf", 12, 1)
-buttonfont = pygame.font.SysFont("Arial", 24, 1)
+debugfont = pygame.font.Font("./Assets/Consolas.ttf", 12)
+buttonfont = pygame.font.SysFont("Verdana", 20, 1)
 headerfont = pygame.font.SysFont("Verdana", 44, 1)
 subheaderfont = pygame.font.SysFont("Verdana", 24, 1)
 
 size = width, height = 640, 480
 black = 0, 0, 0
 white = 255,255,255
+lightblue = 200, 200, 255
+darkblue = 0, 0, 70
 
 #initialize game variables and constants
 pygame.mouse.set_visible(True)
@@ -69,7 +71,7 @@ class menu_title(pygame.sprite.Sprite):
     def update(self, text=None):
         if text != None:
             self.text = text
-        self.image = self.font.render(self.text, True, white)
+        self.image = self.font.render(self.text, True, lightblue)
         self.rect = self.image.get_rect()
         self.rect.center = self.center
 
@@ -122,10 +124,12 @@ class button(pygame.sprite.Sprite):
             self.text = text
 
         #refill background
-        bg = 240 - (self.state * 40)
-        self.image.fill((bg,bg,bg))
+        b = 240 - (self.state * 40)
+        r = g = b-60
+        rgb = (r,g,b)
+        self.image.fill(rgb)
         #redraw text
-        textimg = buttonfont.render(self.text, True,black,(bg,bg,bg))
+        textimg = buttonfont.render(self.text, True,darkblue,rgb)
         textrect = textimg.get_rect()
  
         textrect.center = (self.rect.width//2,self.rect.height//2)
@@ -235,13 +239,11 @@ def calibscreen(click, calib):
                         newstate = 2
                         calib = (True, True)
                     else:
-                        button.update(text="Confirm High Note")
                         quitbuttons.sprite.update(text = "Redo Low Note")
                         calibstate = 1
                         calib = (True,False)
                 elif button in quitbuttons:
                     if calib[0]:
-                        startbuttons.sprite.update(text="Confirm Low Note")
                         quitbuttons.sprite.update(text = "Cancel")
                         calibstate = 0
                         calib = (False,False)
@@ -276,7 +278,7 @@ def gameinit():
     game initialization function
     '''
 
-    pauserect = button((620, 5), (15, 15), "I")
+    pauserect = button((620, 5), (15, 15), "|")
     pauserect.add(quitbuttons)
     player()
 
@@ -285,7 +287,7 @@ def gameunpause():
     '''
     Pause menu cleanup and state switching function
     '''
-    pauserect = button((620, 5), (15, 15), "I")
+    pauserect = button((620, 5), (15, 15), "|")
     pauserect.add(quitbuttons)
 
 def gameexit():
