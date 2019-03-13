@@ -98,7 +98,6 @@ class button(pygame.sprite.Sprite):
         '''
         return self.rect.collidepoint(pos)
 
-
 def drawscreen(redrawlist = []):
     
     debuginfo.clear(screen,bgd)
@@ -257,8 +256,8 @@ def pausemenu(click = False):
             button.update(state=0)
     return debug, newstate
 
+#first time initialization of menu
 maininit()
-
 dbinfo = debug_text((0,0))
 #game while loop
 newstate = 0
