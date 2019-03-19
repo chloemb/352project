@@ -43,7 +43,11 @@ highfreq = 3000
 volumethreshold = .001
 curpitch = 0
 curheight = 0
+curtarget = 0
 calibstate = 0
+
+movethreshold = 20
+playerspeed = 50
 
 '''
 0 = Main Menu Loop
@@ -302,7 +306,7 @@ def gamescreen(click = False):
     '''
     Looping Game Screen routine
     '''
-    global curpitch, curheight
+    global curpitch, curheight, curtarget
 
     debug = ""
     newstate = 2
@@ -325,14 +329,26 @@ def gamescreen(click = False):
 
     curpitch = max(min(curpitch, highfreq), lowfreq)
 
+    potarget = height - int((curpitch - lowfreq) / (highfreq - lowfreq) * height)
+
+    print(abs(potarget - curheight))
+    if abs(potarget - curheight) > movethreshold:
+        curtarget = potarget
+
     # Height to move the player object to
-    curheight = height - int((curpitch - lowfreq) / (highfreq - lowfreq) * height)
+    if abs(curtarget - curheight) >= playerspeed:
+        if curheight > curtarget:
+            curheight -= playerspeed
+        elif curheight < curtarget:
+            curheight += playerspeed
+    else:
+        curheight = curtarget
 
     playerupd.clear(screen, bgd)
     playerupd.update()
 
     debug += " Frequency settings: " + "{:.2f}".format(lowfreq) + " " + "{:.2f}".format(highfreq) + \
-             " Current pitch: " + "{:.2f}".format(curpitch) + " Current height: " + str(curheight)
+             " Current pitch: " + "{:.2f}".format(curpitch) + " Current target: " + str(curtarget)
 
     return debug, newstate
 

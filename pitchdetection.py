@@ -5,7 +5,6 @@ import numpy as np
 
 
 def pitchdetection(lowest_freq, highest_freq, volume_threshold):
-    print(lowest_freq, highest_freq)
     # smoothing_threshold = (highest_freq - lowest_freq) / 2
 
     # PyAudio object.
