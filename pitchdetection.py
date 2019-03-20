@@ -2,6 +2,7 @@ import pyaudio
 import aubio
 import time
 import numpy as np
+import threading
 
 
 def pitchdetection(lowest_freq, highest_freq, volume_threshold):
@@ -25,7 +26,9 @@ def pitchdetection(lowest_freq, highest_freq, volume_threshold):
 
     prevsteadypitch = 0.0
 
-    while True:
+    t = threading.current_thread()
+
+    while getattr(t, "run", True):
         data = stream.read(1024)
         samples = np.fromstring(data, dtype=aubio.float_type)
         pitch = pDetection(samples)[0]

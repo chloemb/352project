@@ -85,8 +85,10 @@ class menu_title(pygame.sprite.Sprite):
         self.text = text
         if titleType == "Header":
             self.font = headerfont
+            self.add(menutitle)
         elif titleType == "Subheader":
             self.font = subheaderfont
+            self.add(menupitch)
         self.center = center
         self.update()
 
@@ -122,8 +124,8 @@ class player(pygame.sprite.Sprite):
         self.rect.centery = curheight
 
 class button(pygame.sprite.Sprite):
-    def __init__(self, location, shape, text=""):
-        super().__init__(buttons)
+    def __init__(self, location, shape, groups, text=""):
+        super().__init__(buttons,groups)
         #set initial state
         self.state = 0 # 0 normal, 1 hover, 2 clicked
         self.text = text
@@ -140,10 +142,8 @@ class button(pygame.sprite.Sprite):
         Appearance updating helper function, used for updates and for initialization
         '''
         #update state variables
-        if state != None:
-            self.state = state
-        if text != None:
-            self.text = text
+        if state != None: self.state = state
+        if text != None: self.text = text
 
         #refill background
         b = 240 - (self.state * 40)
@@ -153,7 +153,6 @@ class button(pygame.sprite.Sprite):
         #redraw text
         textimg = buttonfont.render(self.text, True,darkblue,rgb)
         textrect = textimg.get_rect()
- 
         textrect.center = (self.rect.width//2,self.rect.height//2)
         self.image.blit(textimg, textrect)
         
@@ -169,11 +168,11 @@ def drawscreen(redrawlist = []):
     debuginfo.update()
     menuobjects.clear(screen, bgd)
     obstacles.clear(screen, bgd)
-    redrawlist = redrawlist + obstacles.draw(screen)
-    redrawlist = redrawlist + menuobjects.draw(screen)
-    redrawlist = redrawlist + debuginfo.draw(screen)
-    redrawlist = redrawlist + buttons.draw(screen)
-    redrawlist = redrawlist + playerupd.draw(screen)
+    redrawlist += obstacles.draw(screen)
+    redrawlist += menuobjects.draw(screen)
+    redrawlist += debuginfo.draw(screen)
+    redrawlist += buttons.draw(screen)
+    redrawlist += playerupd.draw(screen)
     pygame.display.update(redrawlist)
 
 def maininit():
@@ -185,12 +184,9 @@ def maininit():
     for bttn in buttons.sprites():
         bttn.kill()
 
-    mainheader = menu_title((320, 100), "Header", "Main Menu")
-    mainheader.add(menutitle)
-    newrect = button((220, 200), (200, 50), "New Game")
-    newrect.add(startbuttons)
-    quitrect = button((220, 300), (200, 50), "Quit")
-    quitrect.add(quitbuttons)
+    menu_title((320, 100), "Header", "Main Menu")
+    button((220, 200), (200, 50), startbuttons, "New Game")
+    button((220, 300), (200, 50), quitbuttons, "Quit")
 
 def mainmenu(click = False):
     ''' 
@@ -221,14 +217,12 @@ def calibinit():
     Calibration Screen Initialization
     '''
     #establish buttons
-    mainheader = menu_title((320, 80), "Header", "Sing or Hum a Low Note")
-    mainheader.add(menutitle)
-    pitchheader = menu_title((320, 150), "Subheader", "Pitch: Note_Goes_Here Hz")
-    pitchheader.add(menupitch)
-    newrect = button((220, 200), (200, 50), "Confirm")
-    newrect.add(startbuttons)
-    quitrect = button((220, 300), (200, 50), "Cancel")
-    quitrect.add(quitbuttons)
+    global calibstate
+    calibstate = 0
+    menu_title((320, 80), "Header", "Sing or Hum a Low Note")
+    menu_title((320, 150), "Subheader", "Pitch: Note_Goes_Here Hz")
+    button((220, 200), (200, 50), startbuttons, "Confirm")
+    button((220, 300), (200, 50), quitbuttons, "Cancel")
     
 def calibscreen(click, calib):
     '''
@@ -303,16 +297,14 @@ def gameinit():
     '''
     global ticker
     ticker = 0
-    pauserect = button((620, 5), (15, 15), "|")
-    pauserect.add(quitbuttons)
+    button((620, 5), (15, 15), quitbuttons, "|")
     player()
 
 def gameunpause():
     '''
     Pause menu cleanup and state switching function
     '''
-    pauserect = button((620, 5), (15, 15), "|")
-    pauserect.add(quitbuttons)
+    button((620, 5), (15, 15), quitbuttons, "|")
 
 def gameexit():
     '''
@@ -323,13 +315,10 @@ def gameexit():
     playeracc.sprite.kill()
     
     #state switching
-    mainheader = menu_title((320, 80), "Header", "Game Over")
-    mainheader.add(menutitle)
-    scoreheader = menu_title((320, 150), "Subheader", "Score: " + str(ticker))
-    newrect = button((220, 200), (200, 50), "Main Menu")
-    newrect.add(startbuttons)
-    quitrect = button((220, 300), (200, 50), "Quit")
-    quitrect.add(quitbuttons)
+    menu_title((320, 80), "Header", "Game Over")
+    menu_title((320, 150), "Subheader", "Score: " + str(ticker))
+    button((220, 200), (200, 50), startbuttons, "Main Menu")
+    button((220, 300), (200, 50), quitbuttons, "Quit")
 
 def overscreen(click = False):
     '''
@@ -366,8 +355,6 @@ def gamescreen(click = False):
         obstacle()
     
     ticker += 1
-
-    
 
     debug = ""
     newstate = 2
@@ -423,12 +410,9 @@ def pauseinit():
     Pause Menu Initialization routine
     '''
     # establish buttons
-    mainheader = menu_title((320, 100), "Header", "Game Paused")
-    mainheader.add(menutitle)
-    newrect = button((220, 200), (200, 50), "Continue Game")
-    newrect.add(startbuttons)
-    quitrect = button((220, 300), (200, 50), "Quit")
-    quitrect.add(quitbuttons)
+    menu_title((320, 100), "Header", "Game Paused")
+    button((220, 200), (200, 50), startbuttons, "Continue Game")
+    button((220, 300), (200, 50), quitbuttons, "Quit")
 
 
 def pausemenu(click = False):
@@ -527,3 +511,7 @@ while not xit:
     debug = str(pygame.mouse.get_pos()) + debug
     dbinfo.text = debug
     drawscreen()
+
+pygame.display.quit()
+t1.run=False
+t1.join()
