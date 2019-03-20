@@ -1,4 +1,4 @@
-import sys, pygame, pitchdetection, threading
+import sys, pygame, pitchdetection, threading, random
 pygame.init()
 
 #helper functions and other definitions
@@ -54,13 +54,30 @@ playerspeed = 50
 1 = Calibration Screen Loop
 2 = Game Loop
 3 = Pause Menu Loop
+4 = Game Over Loop
 '''
 
 screen = pygame.display.set_mode(size)
 bgd = pygame.image.load("./Assets/bground.png")
 screen.blit(bgd, (0, 0))
 pygame.display.update()
+frames = pygame.time.Clock()
+ticker = 0
 
+class obstacle(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__(obstacles)
+        self.image = pygame.image.load("./Assets/astrd.png")
+        self.rect = self.image.get_rect()
+        self.rect.left = width + 5
+        self.rect.centery = random.randint(24, height-24)
+        self.radius = 20
+
+    def update(self):
+        if self.rect.right < 0:
+            self.kill()
+        else:
+            self.rect.x -= 1
 
 class menu_title(pygame.sprite.Sprite):
     def __init__(self, center, titleType, text=""):
@@ -99,6 +116,7 @@ class player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = 15
         self.rect.centery = 240
+        self.radius = 20
 
     def update(self):
         self.rect.centery = curheight
@@ -150,6 +168,8 @@ def drawscreen(redrawlist = []):
     debuginfo.clear(screen, bgd)
     debuginfo.update()
     menuobjects.clear(screen, bgd)
+    obstacles.clear(screen, bgd)
+    redrawlist = redrawlist + obstacles.draw(screen)
     redrawlist = redrawlist + menuobjects.draw(screen)
     redrawlist = redrawlist + debuginfo.draw(screen)
     redrawlist = redrawlist + buttons.draw(screen)
@@ -281,7 +301,8 @@ def gameinit():
     '''
     game initialization function
     '''
-
+    global ticker
+    ticker = 0
     pauserect = button((620, 5), (15, 15), "|")
     pauserect.add(quitbuttons)
     player()
@@ -297,19 +318,63 @@ def gameexit():
     '''
     Game End function
     '''
-
+    obstacles.empty()
+    playerupd.clear(screen, bgd)
     playeracc.sprite.kill()
+    
     #state switching
+    mainheader = menu_title((320, 80), "Header", "Game Over")
+    mainheader.add(menutitle)
+    scoreheader = menu_title((320, 150), "Subheader", "Score: " + str(ticker))
+    newrect = button((220, 200), (200, 50), "Main Menu")
+    newrect.add(startbuttons)
+    quitrect = button((220, 300), (200, 50), "Quit")
+    quitrect.add(quitbuttons)
 
+def overscreen(click = False):
+    '''
+    Game Over Screen
+    '''
+    newstate = 4
+    debug = ""
+    
+    mpos = pygame.mouse.get_pos()
+    for button in buttons.sprites():
+        if button.collidepoint(mpos):
+            debug = button.text
+            if click:
+                button.update(state=2)
+                if button in startbuttons:
+                    newstate = 0
+                elif button in quitbuttons:
+                    newstate = -1
+            else:
+                button.update(state=1)
+        else:
+            button.update(state=0)
+    return debug, newstate
 
 def gamescreen(click = False):
     '''
     Looping Game Screen routine
     '''
-    global curpitch, curheight, curtarget
+    frames.tick(50) #framerate stabilization
+    global curpitch, curheight, curtarget, ticker
+
+    obstacles.update()
+    if not ticker % 60:
+        obstacle()
+    
+    ticker += 1
+
+    
 
     debug = ""
     newstate = 2
+
+    if pygame.sprite.spritecollideany(playeracc.sprite,obstacles, pygame.sprite.collide_circle) != None:
+        newstate = 4
+
     mpos = pygame.mouse.get_pos()
     for button in buttons.sprites():
         if button.collidepoint(mpos):
@@ -373,7 +438,7 @@ def pausemenu(click = False):
     newstate = 3
     debug = ""
     
-    mpos = pygame.mouse.get_pos().x
+    mpos = pygame.mouse.get_pos()
     for button in buttons.sprites():
         if button.collidepoint(mpos):
             debug = button.text
@@ -382,7 +447,7 @@ def pausemenu(click = False):
                 if button in startbuttons:
                     newstate = 2
                 elif button in quitbuttons:
-                    newstate = 0
+                    newstate = 4
             else:
                 button.update(state=1)
         else:
@@ -442,10 +507,11 @@ while not xit:
                 gameunpause()
         elif newstate == 3:
             pauseinit()
+        elif newstate == 4:
+            gameexit()
         else: xit = True
 
     gamestate = newstate
-    curheight = pygame.mouse.get_pos()[1]
 
     if gamestate == 0:
         debug, newstate = mainmenu(click)
@@ -455,6 +521,8 @@ while not xit:
         debug, newstate = gamescreen(click)
     elif gamestate == 3:
         debug, newstate = pausemenu(click)
+    elif gamestate == 4:
+        debug, newstate = overscreen(click)
 
     debug = str(pygame.mouse.get_pos()) + debug
     dbinfo.text = debug
