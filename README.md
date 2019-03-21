@@ -1,5 +1,5 @@
 <div style="text-align: center"><h1>352 Project</h1></div>
-<div style="text-align: right"><h4>
+<div style="text-align: center"><h4>
   Chloe Brown | chloebrown2020@u.northwestern.edu
   <br>
   Katrina Parekh | katrinaparekh2020@u.northwestern.edu
