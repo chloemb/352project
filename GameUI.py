@@ -1,4 +1,4 @@
-import sys, pygame, pitchdetection, threading, random
+import sys, pygame, pitchdetection, threading, random, math
 pygame.init()
 
 #helper functions and other definitions
@@ -15,9 +15,6 @@ menutitle = pygame.sprite.GroupSingle()
 menupitch = pygame.sprite.GroupSingle()
 
 debuginfo = pygame.sprite.RenderUpdates()
-
-ubound = -1000000000000000
-lbound = 1000000000000000
 
 pygame.font.init()
 myfont = pygame.font.Font("Assets/JosefinSans-Regular.ttf", 30)
@@ -39,15 +36,15 @@ pygame.mouse.set_visible(True)
 xit= False
 gamestate = 0
 lowfreq = 0
-highfreq = 3000
+highfreq = 4000
 volumethreshold = .001
 curpitch = 0
 curheight = 0
 curtarget = 0
 calibstate = 0
 
-movethreshold = 20
-playerspeed = 50
+movethreshold = 5
+playerspeed = 40
 
 '''
 0 = Main Menu Loop
@@ -73,11 +70,11 @@ class obstacle(pygame.sprite.Sprite):
         self.rect.centery = random.randint(24, height-24)
         self.radius = 20
 
-    def update(self):
+    def update(self, rate):
         if self.rect.right < 0:
             self.kill()
         else:
-            self.rect.x -= 1
+            self.rect.x -= rate
 
 class menu_title(pygame.sprite.Sprite):
     def __init__(self, center, titleType, text=""):
@@ -347,11 +344,10 @@ def gamescreen(click = False):
     '''
     Looping Game Screen routine
     '''
-    frames.tick(50) #framerate stabilization
     global curpitch, curheight, curtarget, ticker
 
-    obstacles.update()
-    if not ticker % 60:
+    obstacles.update(ticker//100 + 1)
+    if not ticker % 48:
         obstacle()
     
     ticker += 1
@@ -381,9 +377,8 @@ def gamescreen(click = False):
 
     curpitch = max(min(curpitch, highfreq), lowfreq)
 
-    potarget = height - int((curpitch - lowfreq) / (highfreq - lowfreq) * height)
+    potarget = height - int(math.log(curpitch/lowfreq, 2) / math.log(highfreq/lowfreq, 2) * height)
 
-    print(abs(potarget - curheight))
     if abs(potarget - curheight) > movethreshold:
         curtarget = potarget
 
