@@ -1,4 +1,7 @@
 <div style="text-align: center"><h1>352 Project</h1></div>
+<div style="text-align: center"><h3>Final project for EECS 352
+  <br>
+  Taught by Bryan Pardo at Northwestern University</h3></div>
 <div style="text-align: center"><h4>
   Chloe Brown | chloebrown2020@u.northwestern.edu
   <br>
@@ -8,10 +11,7 @@
 </h4>
 </div>
 
-<div style="text-align: center"><h3>Final project for EECS 352
-  <br>
-  Taught by Bryan Pardo at Northwestern University</h3></div>
-
+<h4>PROJECT SUMMARY:</h4>
 <p>
 Our goal for this project was to create a simple runner game wherein the player can control their avatar with the pitch of their voice. We aimed above all to create a fun, responsive, challenging game. The nature of the game also means that those with motor disadvantages (ie, shaky hands or poor coordination) can still play.
 </p>
