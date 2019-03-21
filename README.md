@@ -20,5 +20,5 @@ Our goal for this project was to create a simple runner game wherein the player 
 In order to make the game work for all human vocal ranges (and even some instrument ones), the game calibrates before each play instance by asking the user to make a low pitch and then a high pitch. Then, as the game plays, it takes input from a microphone, detects the pitch of the input in real time, and translates that pitch to a position on the game screen relative to the calibrated low and high pitches. The player's avatar follows that position, allowing real-time input based on pitch.
 </p>
 <p>
-We coded this game using Python 3.7 with the pyaudio, aubio, and pygame packages. Pyaudio allows us to take input from a microphone as a stream while aubio allows us to detect the pitch in real time. Pygame is a Python library for making games in Python. We picked these packages because they let us work all in Python.
+We coded this game using Python 3.7 with the pyaudio, aubio, and pygame packages. Pyaudio allows us to take input from a microphone as a stream, while aubio allows us to detect the pitch in real time. Pygame is a Python library for making games in Python. We picked these packages because they work together in a Python environment, allowing us to integrate them seamlessly with one another.
 </p>
