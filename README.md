@@ -10,7 +10,8 @@
   Jack Warshaw | jackwarshaw2020@u.northwestern.edu
 </h4>
 </div>
-
+<br>
+<br>
 <h4>PROJECT SUMMARY:</h4>
 <p>
 Our goal for this project was to create a simple runner game wherein the player can control their avatar with the pitch of their voice. We aimed above all to create a fun, responsive, challenging game. The nature of the game also means that those with motor disadvantages (ie, shaky hands or poor coordination) can still play.
