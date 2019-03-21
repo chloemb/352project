@@ -9,6 +9,7 @@ startbuttons = pygame.sprite.GroupSingle()
 obstacles = pygame.sprite.RenderUpdates()
 playerupd = pygame.sprite.RenderUpdates()
 playeracc = pygame.sprite.GroupSingle()
+scoreinfo = pygame.sprite.RenderUpdates()
 
 menuobjects = pygame.sprite.RenderUpdates()
 menutitle = pygame.sprite.GroupSingle()
@@ -28,8 +29,9 @@ darkblue = 0, 0, 70
 pygame.font.init()
 debugfont = pygame.font.Font("./Assets/Consolas.ttf", height//40)
 buttonfont = pygame.font.Font("./Assets/Verdana.ttf", height//24)
-headerfont = pygame.font.Font("./Assets/Verdana", height//11)
-subheaderfont = pygame.font..Font("./Assets/Verdana", height//20)
+headerfont = pygame.font.Font("./Assets/Verdana.ttf", height//11)
+subheaderfont = pygame.font.Font("./Assets/Verdana.ttf", height//20)
+scorefont = pygame.font.Font("./Assets/Verdana.ttf", height//30)
 
 #initialize game variables and constants
 curheight = 0
@@ -110,6 +112,19 @@ class debug_text(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
 
+class score_text(pygame.sprite.Sprite):
+    def __init__(self, location, text=""):
+        super().__init__(scoreinfo)
+        self.text = text
+        self.location = location
+        self.update()
+
+    def update(self):
+        self.image = scorefont.render(self.text, True, white)
+        self.rect = self.image.get_rect()
+        self.rect.topleft = self.location
+
+
 class player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__(playeracc,playerupd)
@@ -168,6 +183,8 @@ def drawscreen(redrawlist = []):
     debuginfo.update()
     menuobjects.clear(screen, bgd)
     obstacles.clear(screen, bgd)
+    scoreinfo.clear(screen, bgd)
+    scoreinfo.update()
     redrawlist += obstacles.draw(screen)
     redrawlist += menuobjects.draw(screen)
     redrawlist += debuginfo.draw(screen)
@@ -311,6 +328,7 @@ def gameinit():
     '''
     global ticker
     ticker = 0
+    score_text((0,0), str(ticker))
     pausebutton()
     player()
 
@@ -331,6 +349,8 @@ def gamescreen(click):
     if not ticker % (100//speed):
         obstacle(speed)
     ticker += 1
+
+    score_text.text = str(ticker)
 
     debug = ""
     newstate = 2
