@@ -1,4 +1,12 @@
 # 352 Project
-### Chloe Brown | chloebrown2020@u.northwestern.edu
-### Katrina Parekh | katrinaparekh2020@u.northwestern.edu
-### Jack Warshaw | jackwarshaw2020@u.northwestern.edu
+<div style="text-align: right">
+  <h3>Chloe Brown | chloebrown2020@u.northwestern.edu</h3>
+</div>
+<div style="text-align: right">
+  <h3>Katrina Parekh | katrinaparekh2020@u.northwestern.edu</h3>
+</div>
+<div style="text-align: right">
+  <h3>Jack Warshaw | jackwarshaw2020@u.northwestern.edu</h3>
+</div>
+
+test test
