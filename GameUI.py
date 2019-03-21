@@ -16,19 +16,20 @@ menupitch = pygame.sprite.GroupSingle()
 
 debuginfo = pygame.sprite.RenderUpdates()
 
-pygame.font.init()
-myfont = pygame.font.Font("Assets/JosefinSans-Regular.ttf", 30)
-
-debugfont = pygame.font.Font("./Assets/Consolas.ttf", 12)
-buttonfont = pygame.font.SysFont("Verdana", 20, 1)
-headerfont = pygame.font.SysFont("Verdana", 44, 1)
-subheaderfont = pygame.font.SysFont("Verdana", 24, 1)
-
 size = width, height = 640, 480
+bheight = height//10
+bwidth = width//3
+centerx = width//2
 black = 0, 0, 0
 white = 255,255,255
 lightblue = 200, 200, 255
 darkblue = 0, 0, 70
+
+pygame.font.init()
+debugfont = pygame.font.Font("./Assets/Consolas.ttf", height//40)
+buttonfont = pygame.font.Font("./Assets/Verdana.ttf", height//24)
+headerfont = pygame.font.Font("./Assets/Verdana", height//11)
+subheaderfont = pygame.font..Font("./Assets/Verdana", height//20)
 
 #initialize game variables and constants
 curheight = 0
@@ -62,19 +63,20 @@ frames = pygame.time.Clock()
 ticker = 0
 
 class obstacle(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, speed):
         super().__init__(obstacles)
         self.image = pygame.image.load("./Assets/astrd.png")
         self.rect = self.image.get_rect()
         self.rect.left = width + 5
         self.rect.centery = random.randint(24, height-24)
         self.radius = 20
+        self.speed = speed
 
-    def update(self, rate):
+    def update(self):
         if self.rect.right < 0:
             self.kill()
         else:
-            self.rect.x -= rate
+            self.rect.x -= self.speed
 
 class menu_title(pygame.sprite.Sprite):
     def __init__(self, center, titleType, text=""):
@@ -114,7 +116,7 @@ class player(pygame.sprite.Sprite):
         self.image = pygame.image.load("./Assets/rocket.png")
         self.rect = self.image.get_rect()
         self.rect.x = 15
-        self.rect.centery = 240
+        self.rect.centery = height//2
         self.radius = 20
 
     def update(self):
@@ -160,6 +162,7 @@ class button(pygame.sprite.Sprite):
         '''
         return self.rect.collidepoint(pos)
 
+
 def drawscreen(redrawlist = []):
     debuginfo.clear(screen, bgd)
     debuginfo.update()
@@ -172,6 +175,24 @@ def drawscreen(redrawlist = []):
     redrawlist += playerupd.draw(screen)
     pygame.display.update(redrawlist)
 
+
+def addbutton(group, text, ypos):
+    brect = pygame.rect.Rect(0,0,bwidth,bheight)
+    brect.center = (centerx,ypos)
+    button(brect.topleft, brect.size, group, text)
+
+def menubuttons(starttext, quittext):
+    addbutton(startbuttons, starttext, height//2)
+    addbutton(quitbuttons, quittext, (height*7)//10)
+
+def menutitles(kind, headertext, subheadertext=None):
+    if kind == "single":
+        menu_title((centerx, height//4), "Header", headertext)
+    else:
+        menu_title((centerx, height//6), "Header", headertext)
+        menu_title((centerx, height//3 ), "Subheader", subheadertext)
+        
+
 def maininit():
     '''
     Initialize the main menu
@@ -181,11 +202,10 @@ def maininit():
     for bttn in buttons.sprites():
         bttn.kill()
 
-    menu_title((320, 100), "Header", "Main Menu")
-    button((220, 200), (200, 50), startbuttons, "New Game")
-    button((220, 300), (200, 50), quitbuttons, "Quit")
+    menutitles("single", "Main Menu")
+    menubuttons("New Game", "Quit")
 
-def mainmenu(click = False):
+def mainmenu(click):
     ''' 
     Looping Main Menu routine
     '''
@@ -209,6 +229,7 @@ def mainmenu(click = False):
 
     return debug, newstate
 
+
 def calibinit():
     '''
     Calibration Screen Initialization
@@ -216,12 +237,10 @@ def calibinit():
     #establish buttons
     global calibstate
     calibstate = 0
-    menu_title((320, 80), "Header", "Sing or Hum a Low Note")
-    menu_title((320, 150), "Subheader", "Pitch: Note_Goes_Here Hz")
-    button((220, 200), (200, 50), startbuttons, "Confirm")
-    button((220, 300), (200, 50), quitbuttons, "Cancel")
+    menutitles("double","Sing or Hum a Low Note", "Pitch: Note_Goes_Here Hz")
+    menubuttons("Confirm", "Cancel")
     
-def calibscreen(click, calib):
+def calibscreen(click):
     '''
     Looping Calibration routine
     '''
@@ -250,18 +269,15 @@ def calibscreen(click, calib):
             if click:
                 button.update(state=2)
                 if button in startbuttons:
-                    if calib[0]:
+                    if calibstate == 1:
                         newstate = 2
-                        calib = (True, True)
                     else:
                         quitbuttons.sprite.update(text = "Redo Low Note")
                         calibstate = 1
-                        calib = (True,False)
                 elif button in quitbuttons:
-                    if calib[0]:
+                    if calibstate == 1:
                         quitbuttons.sprite.update(text = "Cancel")
                         calibstate = 0
-                        calib = (False,False)
                     else:
                         newstate = 0
             else:
@@ -269,8 +285,7 @@ def calibscreen(click, calib):
         else:
             button.update(state=0)
 
-    return debug, newstate, calib
-
+    return debug, newstate
 
 def CalibLow():
     global curpitch, lowfreq
@@ -279,7 +294,6 @@ def CalibLow():
         curpitch = float(readpitch)
     lowfreq = curpitch
 
-
 def CalibHigh():
     global curpitch, highfreq
     readpitch = GetPitch()
@@ -287,74 +301,39 @@ def CalibHigh():
         curpitch = float(readpitch)
     highfreq = curpitch
 
-    
+
+def pausebutton():
+    button((width-20, 5), (15, 15), quitbuttons, "|")
+
 def gameinit():
     '''
     game initialization function
     '''
     global ticker
     ticker = 0
-    button((620, 5), (15, 15), quitbuttons, "|")
+    pausebutton()
     player()
 
 def gameunpause():
     '''
     Pause menu cleanup and state switching function
     '''
-    button((620, 5), (15, 15), quitbuttons, "|")
+    pausebutton()
 
-def gameexit():
-    '''
-    Game End function
-    '''
-    obstacles.empty()
-    playerupd.clear(screen, bgd)
-    playeracc.sprite.kill()
-    
-    #state switching
-    menu_title((320, 80), "Header", "Game Over")
-    menu_title((320, 150), "Subheader", "Score: " + str(ticker))
-    button((220, 200), (200, 50), startbuttons, "Main Menu")
-    button((220, 300), (200, 50), quitbuttons, "Quit")
-
-def overscreen(click = False):
-    '''
-    Game Over Screen
-    '''
-    newstate = 4
-    debug = ""
-    
-    mpos = pygame.mouse.get_pos()
-    for button in buttons.sprites():
-        if button.collidepoint(mpos):
-            debug = button.text
-            if click:
-                button.update(state=2)
-                if button in startbuttons:
-                    newstate = 0
-                elif button in quitbuttons:
-                    newstate = -1
-            else:
-                button.update(state=1)
-        else:
-            button.update(state=0)
-    return debug, newstate
-
-def gamescreen(click = False):
+def gamescreen(click):
     '''
     Looping Game Screen routine
     '''
     global curpitch, curheight, curtarget, ticker
 
-    obstacles.update(ticker//100 + 1)
-    if not ticker % 48:
-        obstacle()
-    
+    speed = ticker//200 + 2
+    obstacles.update()
+    if not ticker % (100//speed):
+        obstacle(speed)
     ticker += 1
 
     debug = ""
     newstate = 2
-
     if pygame.sprite.spritecollideany(playeracc.sprite,obstacles, pygame.sprite.collide_circle) != None:
         newstate = 4
 
@@ -396,7 +375,42 @@ def gamescreen(click = False):
 
     debug += " Frequency settings: " + "{:.2f}".format(lowfreq) + " " + "{:.2f}".format(highfreq) + \
              " Current pitch: " + "{:.2f}".format(curpitch) + " Current target: " + str(curtarget)
+    return debug, newstate
 
+
+def gameexit():
+    '''
+    Game End function
+    '''
+    obstacles.empty()
+    playerupd.clear(screen, bgd)
+    playeracc.sprite.kill()
+    
+    #state switching
+    menutitles("double", "Game Over", "Score: " + str(ticker))
+    menubuttons("Main Menu", "Quit")
+
+def overscreen(click):
+    '''
+    Game Over Screen
+    '''
+    newstate = 4
+    debug = ""
+    
+    mpos = pygame.mouse.get_pos()
+    for button in buttons.sprites():
+        if button.collidepoint(mpos):
+            debug = button.text
+            if click:
+                button.update(state=2)
+                if button in startbuttons:
+                    newstate = 0
+                elif button in quitbuttons:
+                    newstate = -1
+            else:
+                button.update(state=1)
+        else:
+            button.update(state=0)
     return debug, newstate
 
 
@@ -405,12 +419,10 @@ def pauseinit():
     Pause Menu Initialization routine
     '''
     # establish buttons
-    menu_title((320, 100), "Header", "Game Paused")
-    button((220, 200), (200, 50), startbuttons, "Continue Game")
-    button((220, 300), (200, 50), quitbuttons, "Quit")
+    menutitles("single", "Game Paused")
+    menubuttons("Continue Game", "Quit")
 
-
-def pausemenu(click = False):
+def pausemenu(click):
     '''
     Looping Pause Menu routine
     '''
@@ -446,14 +458,13 @@ if __name__ == '__main__':
     t1 = threading.Thread(target=pitchdetection.pitchdetection, args=[lowfreq, highfreq, volumethreshold])
     t1.start()
 
-# def GameLoop():
 
 #first time initialization
 maininit()
 dbinfo = debug_text((0,0))
-calib = (False, False)
-#game while loop
 newstate = 0
+
+#game while loop
 while not xit:
     #initialize loop variables
     click = False
@@ -477,7 +488,6 @@ while not xit:
         if newstate == 0:
             maininit()
         elif newstate == 1:
-            calib = (False, False)
             calibinit()
         elif newstate == 2:
             if gamestate == 1:
@@ -495,7 +505,7 @@ while not xit:
     if gamestate == 0:
         debug, newstate = mainmenu(click)
     elif gamestate == 1:
-        debug, newstate, calib = calibscreen(click, calib)
+        debug, newstate = calibscreen(click)
     elif gamestate == 2:
         debug, newstate = gamescreen(click)
     elif gamestate == 3:
@@ -507,6 +517,6 @@ while not xit:
     dbinfo.text = debug
     drawscreen()
 
-pygame.display.quit()
-t1.run=False
+t1.run = False
 t1.join()
+pygame.display.quit()
