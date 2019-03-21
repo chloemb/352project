@@ -9,11 +9,11 @@ startbuttons = pygame.sprite.GroupSingle()
 obstacles = pygame.sprite.RenderUpdates()
 playerupd = pygame.sprite.RenderUpdates()
 playeracc = pygame.sprite.GroupSingle()
-scoreinfo = pygame.sprite.RenderUpdates()
 
-menuobjects = pygame.sprite.RenderUpdates()
+textobjects = pygame.sprite.RenderUpdates()
 menutitle = pygame.sprite.GroupSingle()
-menupitch = pygame.sprite.GroupSingle()
+subheader = pygame.sprite.GroupSingle()
+score = pygame.sprite.GroupSingle()
 
 debuginfo = pygame.sprite.RenderUpdates()
 
@@ -31,7 +31,7 @@ debugfont = pygame.font.Font("./Assets/Consolas.ttf", height//40)
 buttonfont = pygame.font.Font("./Assets/Verdana.ttf", height//24)
 headerfont = pygame.font.Font("./Assets/Verdana.ttf", height//11)
 subheaderfont = pygame.font.Font("./Assets/Verdana.ttf", height//20)
-scorefont = pygame.font.Font("./Assets/Verdana.ttf", height//30)
+scorefont = pygame.font.Font("./Assets/Roboto-Black.ttf", height//20)
 
 #initialize game variables and constants
 curheight = 0
@@ -80,16 +80,20 @@ class obstacle(pygame.sprite.Sprite):
         else:
             self.rect.x -= self.speed
 
-class menu_title(pygame.sprite.Sprite):
+class fancytext(pygame.sprite.Sprite):
     def __init__(self, center, titleType, text=""):
-        super().__init__(menuobjects)
+        super().__init__(textobjects)
         self.text = text
+        self.type = titleType
         if titleType == "Header":
             self.font = headerfont
             self.add(menutitle)
         elif titleType == "Subheader":
             self.font = subheaderfont
-            self.add(menupitch)
+            self.add(subheader)
+        elif titleType == "Score":
+            self.font = scorefont
+            self.add(score)
         self.center = center
         self.update()
 
@@ -98,7 +102,10 @@ class menu_title(pygame.sprite.Sprite):
             self.text = text
         self.image = self.font.render(self.text, True, lightblue)
         self.rect = self.image.get_rect()
-        self.rect.center = self.center
+        if self.type == "Score":
+            self.rect.bottomright = self.center
+        else:
+            self.rect.center = self.center
 
 
 class debug_text(pygame.sprite.Sprite):
@@ -108,21 +115,8 @@ class debug_text(pygame.sprite.Sprite):
         self.update()
 
     def update(self):
-        self.image = debugfont.render(self.text, True,(255,255,255),black)
+        self.image = debugfont.render(self.text, True, white,black)
         self.rect = self.image.get_rect()
-
-
-class score_text(pygame.sprite.Sprite):
-    def __init__(self, location, text=""):
-        super().__init__(scoreinfo)
-        self.text = text
-        self.location = location
-        self.update()
-
-    def update(self):
-        self.image = scorefont.render(self.text, True, white)
-        self.rect = self.image.get_rect()
-        self.rect.topleft = self.location
 
 
 class player(pygame.sprite.Sprite):
@@ -181,12 +175,10 @@ class button(pygame.sprite.Sprite):
 def drawscreen(redrawlist = []):
     debuginfo.clear(screen, bgd)
     debuginfo.update()
-    menuobjects.clear(screen, bgd)
+    textobjects.clear(screen, bgd)
     obstacles.clear(screen, bgd)
-    scoreinfo.clear(screen, bgd)
-    scoreinfo.update()
     redrawlist += obstacles.draw(screen)
-    redrawlist += menuobjects.draw(screen)
+    redrawlist += textobjects.draw(screen)
     redrawlist += debuginfo.draw(screen)
     redrawlist += buttons.draw(screen)
     redrawlist += playerupd.draw(screen)
@@ -204,10 +196,10 @@ def menubuttons(starttext, quittext):
 
 def menutitles(kind, headertext, subheadertext=None):
     if kind == "single":
-        menu_title((centerx, height//4), "Header", headertext)
+        fancytext((centerx, height//4), "Header", headertext)
     else:
-        menu_title((centerx, height//6), "Header", headertext)
-        menu_title((centerx, height//3 ), "Subheader", subheadertext)
+        fancytext((centerx, height//6), "Header", headertext)
+        fancytext((centerx, height//3 ), "Subheader", subheadertext)
         
 
 def maininit():
@@ -274,7 +266,7 @@ def calibscreen(click):
         CalibHigh()
         pitch = highfreq
 
-    menupitch.sprite.update("Pitch: " + "{:.2f}".format(pitch) + " Hz")
+    subheader.sprite.update("Pitch: " + "{:.2f}".format(pitch) + " Hz")
 
     #click handling:
     mpos = pygame.mouse.get_pos()
@@ -319,8 +311,9 @@ def CalibHigh():
     highfreq = curpitch
 
 
-def pausebutton():
+def gamehelper():
     button((width-20, 5), (15, 15), quitbuttons, "|")
+    fancytext((width-5, height-5), "Score", str(ticker))
 
 def gameinit():
     '''
@@ -328,15 +321,14 @@ def gameinit():
     '''
     global ticker
     ticker = 0
-    score_text((0,0), str(ticker))
-    pausebutton()
+    gamehelper()
     player()
 
 def gameunpause():
     '''
     Pause menu cleanup and state switching function
     '''
-    pausebutton()
+    gamehelper()
 
 def gamescreen(click):
     '''
@@ -350,12 +342,13 @@ def gamescreen(click):
         obstacle(speed)
     ticker += 1
 
-    score_text.text = str(ticker)
+    score.update("Score:" + str(ticker))
 
     debug = ""
     newstate = 2
     if pygame.sprite.spritecollideany(playeracc.sprite,obstacles, pygame.sprite.collide_circle) != None:
         newstate = 4
+        gameexit()
 
     mpos = pygame.mouse.get_pos()
     for button in buttons.sprites():
@@ -406,7 +399,10 @@ def gameexit():
     playerupd.clear(screen, bgd)
     playeracc.sprite.kill()
     
-    #state switching
+def overinit():
+    '''
+    Game Over Screen initialization routine
+    '''
     menutitles("double", "Game Over", "Score: " + str(ticker))
     menubuttons("Main Menu", "Quit")
 
@@ -459,6 +455,7 @@ def pausemenu(click):
                     newstate = 2
                 elif button in quitbuttons:
                     newstate = 4
+                    gameexit()
             else:
                 button.update(state=1)
         else:
@@ -499,8 +496,8 @@ while not xit:
     debug = ""
     if newstate != gamestate:
         # clear buttons and old header
-        menuobjects.clear(screen, bgd)
-        for header in menuobjects:
+        textobjects.clear(screen, bgd)
+        for header in textobjects:
             header.kill()
         buttons.clear(screen, bgd)
         for bttn in buttons.sprites():
@@ -517,7 +514,7 @@ while not xit:
         elif newstate == 3:
             pauseinit()
         elif newstate == 4:
-            gameexit()
+            overinit()
         else: xit = True
 
     gamestate = newstate
