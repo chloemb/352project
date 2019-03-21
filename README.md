@@ -8,7 +8,9 @@
 </h4>
 </div>
 
-<h3>Project for the course EECS 352, taught by Bryan Pardo at Northwestern University</h3>
+<div style="text-align: center"><h3>Final project for EECS 352
+  <br>
+  Taught by Bryan Pardo at Northwestern University</h3></div>
 
 <p>
 Our goal for this project was to create a simple runner game wherein the player can control their avatar with the pitch of their voice. We aimed above all to create a fun, responsive, challenging game. The nature of the game also means that those with motor disadvantages (ie, shaky hands or poor coordination) can still play.
