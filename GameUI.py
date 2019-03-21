@@ -28,8 +28,8 @@ darkblue = 0, 0, 70
 pygame.font.init()
 debugfont = pygame.font.Font("./Assets/Consolas.ttf", height//40)
 buttonfont = pygame.font.Font("./Assets/Verdana.ttf", height//24)
-headerfont = pygame.font.Font("./Assets/Verdana", height//11)
-subheaderfont = pygame.font..Font("./Assets/Verdana", height//20)
+headerfont = pygame.font.Font("./Assets/Verdana.ttf", height//11)
+subheaderfont = pygame.font.Font("./Assets/Verdana.ttf", height//20)
 
 #initialize game variables and constants
 curheight = 0
@@ -56,7 +56,9 @@ playerspeed = 40
 '''
 
 screen = pygame.display.set_mode(size)
-bgd = pygame.image.load("./Assets/bground.png")
+icon = pygame.image.load("./Assets/icon.png")
+pygame.display.set_icon(icon)
+bgd = pygame.transform.smoothscale(pygame.image.load("./Assets/bground.png"), size)
 screen.blit(bgd, (0, 0))
 pygame.display.update()
 frames = pygame.time.Clock()
