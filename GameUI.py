@@ -5,9 +5,9 @@ pygame.init()
 size = width, height = 640, 480
 lowfreq = 0
 highfreq = 4000
-volumethreshold = .001
+volumethreshold = .005
 movethreshold = 5
-playerspeed = 40
+playerspeed = height//12
 
 #Set up sprite groups
 ## Buttons
@@ -67,7 +67,7 @@ Gamestate Key
 
 #set up game screen
 screen = pygame.display.set_mode(size)
-bgd = pygame.image.load("./Assets/bground.png")
+bgd = pygame.transform.smoothscale(pygame.image.load("./Assets/bground.png"), size)
 screen.blit(bgd, (0, 0))
 pygame.display.set_icon(pygame.image.load("./Assets/icon.png"))
 pygame.display.set_caption("Cosmic Scale")

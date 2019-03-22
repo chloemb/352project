@@ -29,7 +29,13 @@ def pitchdetection(lowest_freq, highest_freq, volume_threshold):
     t = threading.current_thread()
 
     while getattr(t, "run", True):
-        data = stream.read(1024)
+        try:
+            data = stream.read(1024)
+        except:
+            print("overflowed")
+            stream = p.open(format=pyaudio.paFloat32,
+                            channels=1, rate=44100, input=True,
+                            frames_per_buffer=1024)
         samples = np.fromstring(data, dtype=aubio.float_type)
         pitch = pDetection(samples)[0]
         # Compute the energy (volume) of the
