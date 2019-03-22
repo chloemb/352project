@@ -24,12 +24,56 @@ We coded this game using Python 3.7 with the pyaudio, aubio, and pygame packages
 </p>
 <h4> STATISTICAL ANALYSIS</h4>
 <p>
-In order to analyze the performance of our pitch detection through aubio, we used the dataset of VocalSet, which contains actual singing in a variety of methods by several different singers. We used this dataset for the diversity of testing that it allowed us to choose from, and ultimately decided on using both male and female voices for straight A scales. We used the straight a scales for male_1, male_2, female_1, and female_2, and took 10 samples of each voice, recording with the same method each time for consistency. Overall, we found that the pitch processing worked fairly well, as each singer's mean and mode tracks ended up maintaining the same rough shape of their component recordings. Though the mean and mode of the tracks are both fairly accurate, we found the mode to follow the shape of a scale better than the mean, and have based our assesment mainly on those. 
+In order to analyze the performance of our pitch detection through aubio, we used the dataset of VocalSet, which contains actual singing in a variety of methods by several different singers. We used this dataset for the diversity of testing that it allowed us to choose from, and ultimately decided on using both male and female voices for straight A scales. We used the straight a scales for male_1, male_2, female_1, and female_2, and took 10 samples of each voice, recording with the same method each time for consistency. Overall, we found that the pitch processing worked fairly well, as each singer's mean and mode tracks ended up maintaining the same rough shape of their component recordings. Though the mean and mode of the tracks are both fairly accurate, we found the mode to follow the shape of a scale better than the mean, and have based our assesment mainly on those. We decided to use scales for testing over the other singing techniques presented by this database because we believed its data visualizations would be the most recognizable and would stretch a wide range of singing values.
 </p>
 <p>
-In terms of possible errors for data collection, one may be the the technique used to get this testing data. The testing data was collected manually, meaning that the speaker quality will impact the pitch detection based on well how the microphone can intake the range and quality of sound output. Additionally, because the process was done manually, there is some error based on holding up the microphone directly to the speaker as it was not in exactly the same location each time. Overall these problems could be solved through automated testing, though these tests were manual because we wanted to test in the same way that we were taking in data, through the speakers, and automated testing would've had to have been directly through file stream inputs. 
+In terms of possible errors for data collection, one may be the the technique used to get this testing data. The testing data was collected manually, meaning that the speaker quality will impact the pitch detection based on well how the microphone can intake the range and quality of sound output. Additionally, because the process was done manually, there is some error based on holding up the microphone directly to the speaker as it was not in exactly the same location each time. Overall these problems could be solved through automated testing, though these tests were manual because we wanted to test in the same way that we were taking in data, through the speakers, and automated testing would've had to have been directly through file stream inputs. The files used for testing can be found [here](https://github.com/chloemb/352project/tree/master/VocalSet).
 </p>
 ![Male_One_All_Takes](/Images/Male_One_All_Takes.png)
 <p>
- Figure 1. Here is an overlay of all 10 testing takes of the Male One straight scale track from VocalSet, showing a high degree of similarity across each recording with some variation confined to areas of large spikes. 
+Figure 1. Here is an overlay of all 10 testing takes of the Male One straight scale track from VocalSet, showing a high degree of similarity across each recording with some variation confined to areas of large spikes. 
  </p>
+![Male_One_Average](/Images/Male_One_Average.png)
+<p>
+Figure 2. Here is the average value of all 10 testing takes of the Male One straight scale track from VocalSet, which shows a fairly unifrom scale with some unexpected variation between 200 and 250 that breaks this uniformity.
+</p>
+![Male_One_Mode](/Images/Male_One_Mode.png)
+<p>
+Figure 3. Here is the mode of all 10 testing takes of the Male One straight scale track from VocalSet, which shows an extemely uniform distribution of values along the expected scale shape. 
+</p>
+![Female_One_All_Takes](/Images/Female_One_All_Takes.png)
+<p>
+Figure 4. Here is an overlay of all 10 testing takes of the Female One straight scale track from VocalSet, showing a high degree of similarity across each recording. Though there still are a decent number of occassional spikes, one of the spikes occurs at the same for each track, showing that our pitch detection is noticing this variation that likely occured due to the singer.
+</p>  
+![Female_One_Average](/Images/Female_One_Average.png)
+<p>
+Figure 5. Here is the average of all 10 testing takes of the Female One straight scale track from VocalSet, which shows a uniform distribution of values along the expected scale shape and significantly fewer unintended spikes.
+</p>
+![Female_One_Mode](/Images/Female_One_Mode.png)
+<p>
+Figure 6. Here is the mode of all 10 testing takes of the Female One straight scale track from VocalSet, which shows an extremely uniform distribution of values along the expected scale shape, with only one unintended spike.
+</p>
+![Male_Two_All_Takes](/Images/Male_Two_All_Takes.png)
+<p>
+Figure 7. Here is an overlay of all 10 takes of the Male Two straight scale track from VocalSet, which shows some slight variation from the expected scale shape but also presents very few unintended spikes.
+</p>
+![Male_Two_Average](/Images/Male_Two_Average.png)
+<p>
+Figure 8. Here is the average of all 10 testing takes of the Male Two straight scale track from VocalSet, which shows a reduction in the size of unintended spikes and a tightening into the expected scale shape.
+</p>
+![Male_Two_Mode](/Images/Male_Two_Mode.png)
+<p>
+Figure 9. Here is the mode of all 10 testing takes of the Male Two straight scale track from VocalSet, which shows a nullification of unintended spikes and the expected scale shape, but also the loss of a few expected regions of intended spiking.
+</p>
+![Female_Two_All_Takes](/Images/Female_Two_All_Takes.png)
+<p>
+Figure 10. Here is an overlay of all 10 testing takes of the Female Two straight scale track from VocalSet, which shows a decent overall scale shape that fits as expected, but a decent number of unintended spikes in addition to several intended ones.
+</p>
+![Female_Two_Average](/Images/Female_Two_Average.png)
+<p>
+Figure 11. Here is the average of all 10 testing takes of the Female Two straight scale track from VocalSet, which shows a dramatic reduction in some of the more isolated unintended spikes will retaining regions heavy with intended and unintended spikes, as well as a fairly tight scale shape that still has some variation. 
+</p>
+![Female_Two_Mode](/Images/Female_Two_Mode.png)
+<p>
+Figure 12. Here is the mode of all the 10 testing takes of the Female Two straight scale track from VocalSet, which shows an extreme tightening into the expected scale shape, with a reduction of the number of intended and unintended spikes across the track, though the size of the ones present is not lessened as it was for the averages. 
+</p>
