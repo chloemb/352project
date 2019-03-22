@@ -70,6 +70,7 @@ screen = pygame.display.set_mode(size)
 bgd = pygame.image.load("./Assets/bground.png")
 screen.blit(bgd, (0, 0))
 pygame.display.set_icon(pygame.image.load("./Assets/icon.png"))
+pygame.display.set_caption("Cosmic Scale")
 pygame.display.update()
 
 #Set up obstacle sprite class
@@ -370,7 +371,7 @@ if __name__ == '__main__':
 
 
 #first time initialization
-menuinit("New Game", "Quit", "Main Menu")
+menuinit("New Game", "Quit", "Cosmic Scale")
 #dbinfo = debug_text((0,0))
 newstate = 0
 
@@ -398,7 +399,7 @@ while not xit:
             bttn.kill()
 
         if newstate == 0:
-            menuinit("New Game", "Quit", "Main Menu")
+            menuinit("New Game", "Quit", "Cosmic Scale")
         elif newstate == 1:
             calibstate = 0
             menuinit("Confirm", "Cancel", "Sing or Hum a Low Note", "Pitch: Note_Goes_Here Hz")
