@@ -22,3 +22,7 @@ In order to make the game work for all human vocal ranges (and even some instrum
 <p>
 We coded this game using Python 3.7 with the pyaudio, aubio, and pygame packages. Pyaudio allows us to take input from a microphone as a stream, while aubio allows us to detect the pitch in real time. Pygame is a Python library for making games in Python. We picked these packages because they work together in a Python environment, allowing us to integrate them seamlessly with one another.
 </p>
+<h4> STATISTICAL ANALYSIS</h4>
+<p>
+In order to analyze the performance of our pitch detection through aubio, we used the dataset of VocalSet, which contains actual singing in a variety of methods by several different singers. We used this dataset for the diversity of testing that it allowed us to choose from, and ultimately decided on using both male and female voices for straight A scales. We used the straight a scales for male_1, male_2, female_1, and female_2, and took 10 samples of each voice, recording with the same method each time for consistency. Overall, we found that the pitch processing worked fairly well, as each singer's mean and mode tracks ended up maintaining the same rough shape of their component recordings. Though the mean and mode of the tracks are both fairly accurate, we found the mode to follow the shape of a scale better than the mean, and have based our assesment mainly on those. 
+</p>
