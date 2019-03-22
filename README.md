@@ -12,6 +12,13 @@
 </div>
 <br>
 <br>
+
+[![Demo Video](http://img.youtube.com/vi/vCUaTwgwivM/0.jpg)](http://www.youtube.com/watch?v=vCUaTwgwivM "Cosmic Space Demo")
+<br>
+Click above to see a demo of Cosmic Space's gameplay.
+<br>
+<br>
+
 <h4>PROJECT SUMMARY</h4>
 <p>
 Our goal for this project was to create a simple runner game wherein the player can control their avatar with the pitch of their voice. We aimed above all to create a fun, responsive, challenging game. The nature of the game also means that those with motor disadvantages (ie, shaky hands or poor coordination) can still play.
@@ -24,7 +31,9 @@ We coded this game using Python 3.7 with the pyaudio, aubio, and pygame packages
 </p>
 
 ![Screenshot](Images/ingame.png)
-<h5>A screenshot from the in-game window. The rocket on the left is controlled by the pitch of the player's voice.</h5>
+<br>
+A screenshot from the in-game window. The rocket on the left is controlled by the pitch of the player's voice.
+<br>
 
 <h4>PROJECT DISCUSSION</h4>
 <p>
