@@ -22,6 +22,10 @@ In order to make the game work for all human vocal ranges (and even some instrum
 <p>
 We coded this game using Python 3.7 with the pyaudio, aubio, and pygame packages. Pyaudio allows us to take input from a microphone as a stream, while aubio allows us to detect the pitch in real time. Pygame is a Python library for making games in Python. We picked these packages because they work together in a Python environment, allowing us to integrate them seamlessly with one another.
 </p>
+
+![Screenshot](Images/ingame.png)
+<h5>A screenshot from the in-game window. The rocket on the left is controlled by the pitch of the player's voice.</h5>
+
 <h4>PROJECT DISCUSSION</h4>
 <p>
 Because of Cosmic Scale's real-time pitch detection, we are unable to extensively process the input stream. This means we had to pick the modifications we made to aubio's pitch detection output very carefully. Our raw pitch detection ouputs a constant stream of numbers corresponding to the frequency the microphone input is detecting. When there is no sound detected, the output is zero. We don't want the player avatar to move down on the screen whenever the player stops to take a breath, so whenever the pitch ouput is zero, we instead keep the player at the position that it was last.
