@@ -2,3 +2,14 @@
 pitch.txt
 __pycache__
 __pycache__/pitchdetection.cpython-37.pyc
+cosmic-scale-deps/PyAudio-0.2.11.tar.gz
+cosmic-scale-deps/aubio-0.4.9.tar.gz
+cosmic-scale-deps/kiwisolver-1.0.1-cp37-none-win32.whl
+cosmic-scale-deps/pygame-1.9.4-cp37-cp37m-win32.whl
+cosmic-scale-deps/pyparsing-2.3.1-py2.py3-none-any.whl
+cosmic-scale-deps/cycler-0.10.0-py2.py3-none-any.whl
+cosmic-scale-deps/matplotlib-3.0.3-cp37-cp37m-win32.whl
+cosmic-scale-deps/numpy-1.16.2-cp37-cp37m-win32.whl
+cosmic-scale-deps/python_dateutil-2.8.0-py2.py3-none-any.whl
+cosmic-scale-deps/setuptools-40.8.0-py2.py3-none-any.whl
+cosmic-scale-deps/six-1.12.0-py2.py3-none-any.whl
