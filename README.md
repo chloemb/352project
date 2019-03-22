@@ -1,4 +1,4 @@
-<div style="text-align: center"><h1>352 Project</h1></div>
+<div style="text-align: center"><h1>Cosmic Scale</h1></div>
 <div style="text-align: center"><h3>Final project for EECS 352
   <br>
   Taught by Bryan Pardo at Northwestern University</h3></div>
