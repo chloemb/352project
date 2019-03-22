@@ -29,3 +29,7 @@ In order to analyze the performance of our pitch detection through aubio, we use
 <p>
 In terms of possible errors for data collection, one may be the the technique used to get this testing data. The testing data was collected manually, meaning that the speaker quality will impact the pitch detection based on well how the microphone can intake the range and quality of sound output. Additionally, because the process was done manually, there is some error based on holding up the microphone directly to the speaker as it was not in exactly the same location each time. Overall these problems could be solved through automated testing, though these tests were manual because we wanted to test in the same way that we were taking in data, through the speakers, and automated testing would've had to have been directly through file stream inputs. 
 </p>
+![Male_One_All_Takes](/Images/Male_One_All_Takes.png)
+<p>
+ Figure 1. Here is an overlay of all 10 testing takes of the Male One straight scale track from VocalSet, showing a high degree of similarity across each recording with some variation confined to areas of large spikes. 
+ </p>
