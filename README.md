@@ -12,7 +12,7 @@
 </div>
 <br>
 <br>
-<h4>PROJECT SUMMARY:</h4>
+<h4>PROJECT SUMMARY</h4>
 <p>
 Our goal for this project was to create a simple runner game wherein the player can control their avatar with the pitch of their voice. We aimed above all to create a fun, responsive, challenging game. The nature of the game also means that those with motor disadvantages (ie, shaky hands or poor coordination) can still play.
 </p>
@@ -22,7 +22,20 @@ In order to make the game work for all human vocal ranges (and even some instrum
 <p>
 We coded this game using Python 3.7 with the pyaudio, aubio, and pygame packages. Pyaudio allows us to take input from a microphone as a stream, while aubio allows us to detect the pitch in real time. Pygame is a Python library for making games in Python. We picked these packages because they work together in a Python environment, allowing us to integrate them seamlessly with one another.
 </p>
-<h4> STATISTICAL ANALYSIS</h4>
+<h4>PROJECT DISCUSSION</h4>
+<p>
+Because of Cosmic Scale's real-time pitch detection, we are unable to extensively process the input stream. This means we had to pick the modifications we made to aubio's pitch detection output very carefully. Our raw pitch detection ouputs a constant stream of numbers corresponding to the frequency the microphone input is detecting. When there is no sound detected, the output is zero. We don't want the player avatar to move down on the screen whenever the player stops to take a breath, so whenever the pitch ouput is zero, we instead keep the player at the position that it was last.
+</p>
+<p>
+Additionally, Cosmic Scale's input detection functions best in an environment where there is little to no background noise, because background noise can be picked up by the microphone and cause the player avatar move erratically. To partially mitigate this problem, we have imposed a minimum volume threshold on the input passing. However, this method does not work perfectly as loud or sudden background noises can still be picked up by the microphone.
+</p>
+<p>
+In the future, we believe it would be interesting to implement speech recognition in the game's menus so it could truly be a hands-free experience. This would allow even more people to play Cosmic Scale.
+</p>
+<h4>WINDOWS INSTALLATION INSTRUCTIONS</h4>
+<p>To install and play Cosmic Scale on your Windows machine, navigate to the GitHub repository linked at the top of this page. Download and unzip the files, then double click on the install.bat file to install the required packages. After this, you should be able to double click the CosmicScale.bat file to play Cosmic Scale.
+</p>
+<h4>STATISTICAL ANALYSIS</h4>
 <p>
 In order to analyze the performance of our pitch detection through aubio, we used the dataset of VocalSet, which contains actual singing in a variety of methods by several different singers. We used this dataset for the diversity of testing that it allowed us to choose from, and ultimately decided on using both male and female voices for straight A scales. We used the straight a scales for male_1, male_2, female_1, and female_2, and took 10 samples of each voice, recording with the same method each time for consistency. Overall, we found that the pitch processing worked fairly well, as each singer's mean and mode tracks ended up maintaining the same rough shape of their component recordings. Though the mean and mode of the tracks are both fairly accurate, we found the mode to follow the shape of a scale better than the mean, and have based our assesment mainly on those. We decided to use scales for testing over the other singing techniques presented by this database because we believed its data visualizations would be the most recognizable and would stretch a wide range of singing values.
 </p>
